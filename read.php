@@ -35,13 +35,22 @@ if ($mysqli->connect_errno) {
     // You do not want to reveal sensitive information
 
     // Let's try this:
-    echo "Sorry, this website is experiencing problems.";
+    echo "Oops! Database connection error:<br />\n";
 
     // Something you should not do on a public site, but this example will show you
     // anyways, is print out MySQL error related information -- you might log this
     echo "Error: Failed to make a MySQL connection, here is why: \n";
-    echo "Errno: " . $mysqli->connect_errno . "\n";
-    echo "Error: " . $mysqli->connect_error . "\n";
+    echo "Errno: " . $mysqli->connect_errno . "<br />\n";
+    echo "Error: " . $mysqli->connect_error . "<br />\n";
+	if ($mysqli->connect_errno == 1045){
+		echo "Incorrect credentials. Double-check your credentials and make sure you are authorized to access the Puppies Unlimited database.";
+	}
+	else if ($mysqli->connect_errno == 1049){
+		echo "Unknown database. Make sure the database you're trying to connect to exists.";
+	} 
+	else if ($mysqli->connect_errno == 2002){
+		echo "Connection refused. Make sure you're on the correct network to access the Puppies Unlimited database and that it's live.";
+	} 
     
     // You might want to show them something nice, but we will simply exit
     exit;

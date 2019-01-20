@@ -24,6 +24,19 @@ if (isset($_GET['secretkey'])){
 	$secretkey = 'N/A';
 }
 
+if (isset($_GET['table'])){
+	$table = $_GET['table'];
+} else {
+	$table = 'N/A';
+}
+
+if (($user == 'N/A') || ($secretkey == 'N/A') || ($table == 'N/A')){
+	echo "Oops! Parameter error:<br />\n";
+	echo "All Puppies Unlimited&trade; URL queries require a 'user', 'secretkey' and 'table' parameter. Check you have at least these three in your URL.<br />\n";
+	echo "( Example: http://192.168.50.92/it350site/read.php?user=my_user&secretkey=my_secretkey&table=my_table )";
+	exit;
+}
+
 // Connecting to and selecting a MySQL database named sakila
 // Hostname: 127.0.0.1, username: your_user, password: your_pass, db: sakila
 $mysqli = new mysqli('127.0.0.1', $user, $secretkey, 'puppies_unlimited');
@@ -39,17 +52,16 @@ if ($mysqli->connect_errno) {
 
     // Something you should not do on a public site, but this example will show you
     // anyways, is print out MySQL error related information -- you might log this
-    echo "Error: Failed to make a MySQL connection, here is why: \n";
     echo "Errno: " . $mysqli->connect_errno . "<br />\n";
     echo "Error: " . $mysqli->connect_error . "<br />\n";
 	if ($mysqli->connect_errno == 1045){
-		echo "Incorrect credentials. Double-check your credentials and make sure you are authorized to access the Puppies Unlimited database.";
+		echo "Incorrect credentials. Double-check your credentials and make sure you are authorized to access the Puppies Unlimited&trade; database.";
 	}
 	else if ($mysqli->connect_errno == 1049){
 		echo "Unknown database. Make sure the database you're trying to connect to exists.";
 	} 
 	else if ($mysqli->connect_errno == 2002){
-		echo "Connection refused. Make sure you're on the correct network to access the Puppies Unlimited database and that it's live.";
+		echo "Connection refused. Make sure you're on the correct network to access the Puppies Unlimited&trade; database and that it's live.";
 	} 
     
     // You might want to show them something nice, but we will simply exit

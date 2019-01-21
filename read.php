@@ -1,5 +1,8 @@
 <?php
 error_reporting(1);
+ini_set('display_startup_errors', true);
+error_reporting(E_ALL);
+ini_set('display_errors', true);
 // Let's pass in a $_GET variable to our example, in this case
 // it's aid for actor_id in our Sakila database. Let's make it
 // default to 1, and cast it to an integer as to avoid SQL injection
@@ -72,7 +75,7 @@ if ($mysqli->connect_errno) {
 // Check if Table exists in Database
 $checktable = "DESCRIBE $table";
 if (!$mysqli->query($checktable)){
-	echo "Oops! Table error:<br />\n";
+	echo "Oops! Parameter error:<br />\n";
 	echo "The table you specified for your 'table' parameter is not in the Puppies Unlimited&trade; database. Check your spelling and try again.";
 	$validparams = FALSE;
 	exit;
@@ -82,17 +85,48 @@ if (!$mysqli->query($checktable)){
 if (isset($_GET['order']) && $validparams == TRUE){
 	$order = $_GET['order'];
 	if ($mysqli->query("SELECT $order FROM $table")){
-		echo "Valid 'order' column. ";
+		// Valid 'order' column
 	} else{
-		echo "Invalid 'order' column. ";
+		echo "Oops! Parameter error:<br />\n";
+		echo "The column you specified for your 'order' parameter is not in the $table table. Check your spelling and try again.";
 		$validparams = FALSE;
 	}
 }
 
-if (isset($_GET['limit'])){
+// Check if 'limit' parameters are valid
+if (isset($_GET['limit']) && $validparams == TRUE){
 	$limit = $_GET['limit'];
-} else {
-	$limit = 'N/A';
+	// Check for invalid characters (only numerical and ',' allowed)
+	if (preg_match("/[^0-9\,]/", $limit) && $validparams == TRUE){
+    echo "Oops! Parameter error:<br />\n";
+	echo "The value you specified for  your 'limit' parameter contains invalid characters. The 'limit' parameter either uses 1 numeric value or 2 numeric values separated by a comma.";
+	$validparams = FALSE;
+	}
+	// Check for more than 1 comma
+	if ((substr_count($limit, ",") > 1) && $validparams == TRUE){
+		echo "Oops! Parameter error:<br />\n";
+		echo "The value you specified for  your 'limit' parameter contains too many commas. The 'limit' parameter either uses 1 numeric value or 2 numeric values separated by a comma.";
+	    $validparams = FALSE;
+	}
+	// Check for commas at beginning or end
+	if (((strpos($limit, ",") === 0) || (substr($limit, -1) == ",")) && $validparams == TRUE){
+		echo "Oops! Parameter error:<br />\n";
+		echo "The value you specified for  your 'limit' parameter has a comma in the wrong place. The 'limit' parameter either uses 1 numeric value or 2 numeric values separated by a comma.";
+		$validparams = FALSE;
+	}
+	// Check for leading 0's
+	if ($validparams == TRUE){
+	$limit_arr = explode(",",$limit);
+		foreach($limit_arr as $item) {
+			if((string)(intval($item)) !== $item){
+			$validparams = FALSE;
+			}
+		}
+		if ($validparams == FALSE){
+			echo "Oops! Parameter error:<br />\n";
+			echo "The value you specified for  your 'limit' parameter has at least 1 integer with leading 0's. Please remove any leading 0's in your 'limit' parameter.";
+		}
+	}
 }
 
 // Perform an SQL query

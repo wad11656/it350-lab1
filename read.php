@@ -40,6 +40,7 @@ if ((!isset($_GET['user'])) || (!isset($_GET['secretkey'])) || (!isset($_GET['ta
 // Connecting to and selecting a MySQL database named sakila
 // Hostname: 127.0.0.1, username: your_user, password: your_pass, db: sakila
 $mysqli = new mysqli('127.0.0.1', $user, $secretkey, 'puppies_unlimited');
+$validparams = TRUE;
 
 // Oh no! A connect_errno exists so the connection attempt failed!
 if ($mysqli->connect_errno) {
@@ -63,15 +64,35 @@ if ($mysqli->connect_errno) {
 	else if ($mysqli->connect_errno == 2002){
 		echo "Connection refused. Make sure you're on the correct network to access the Puppies Unlimited&trade; database and that it's live.";
 	} 
-    
+    $validparams = FALSE;
     // You might want to show them something nice, but we will simply exit
     exit;
 }
 
+// Check if Table exists in Database
 $checktable = "DESCRIBE $table";
 if (!$mysqli->query($checktable)){
 	echo "Oops! Table error:<br />\n";
 	echo "The table you specified for your 'table' parameter is not in the Puppies Unlimited&trade; database. Check your spelling and try again.";
+	$validparams = FALSE;
+	exit;
+}
+
+// Check if 'order' Column exists in Table
+if (isset($_GET['order']) && $validparams == TRUE){
+	$order = $_GET['order'];
+	if ($mysqli->query("SELECT $order FROM $table")){
+		echo "Valid 'order' column. ";
+	} else{
+		echo "Invalid 'order' column. ";
+		$validparams = FALSE;
+	}
+}
+
+if (isset($_GET['limit'])){
+	$limit = $_GET['limit'];
+} else {
+	$limit = 'N/A';
 }
 
 // Perform an SQL query

@@ -30,7 +30,7 @@ if (isset($_GET['table'])){
 	$table = 'N/A';
 }
 
-if (($user == 'N/A') || ($secretkey == 'N/A') || ($table == 'N/A')){
+if ((!isset($_GET['user'])) || (!isset($_GET['secretkey'])) || (!isset($_GET['table']))){
 	echo "Oops! Parameter error:<br />\n";
 	echo "All Puppies Unlimited&trade; URL queries require a 'user', 'secretkey' and 'table' parameter. Check you have at least these three in your URL.<br />\n";
 	echo "( Example: http://192.168.50.92/it350site/read.php?user=my_user&secretkey=my_secretkey&table=my_table )";
@@ -66,6 +66,12 @@ if ($mysqli->connect_errno) {
     
     // You might want to show them something nice, but we will simply exit
     exit;
+}
+
+$checktable = "DESCRIBE $table";
+if (!$mysqli->query($checktable)){
+	echo "Oops! Table error:<br />\n";
+	echo "The table you specified for your 'table' parameter is not in the Puppies Unlimited&trade; database. Check your spelling and try again.";
 }
 
 // Perform an SQL query

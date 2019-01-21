@@ -132,7 +132,21 @@ if (isset($_GET['limit']) && $validparams == TRUE){
 }
 
 // Perform an SQL query
-$sql = "SELECT actor_id, first_name, last_name FROM actor WHERE actor_id = $aid";
+if ($validparams == TRUE){
+$sql = 'SELECT * FROM ' . $table;
+	if (isset($_GET['order'])){
+		$sql .= ' ORDER BY ' . $order;
+	}
+	if (isset($_GET['limit'])){
+		$sql .= ' LIMIT ' . $limit;
+	}
+	// Print SQL query result
+	if($result = $mysqli->query($sql)){
+		$result_array = $result->fetch_all(MYSQLI_ASSOC);
+		echo json_encode($result_array);
+	}
+}
+
 if (!$result = $mysqli->query($sql)) {
     // Oh no! The query failed. 
     echo "Sorry, the website is experiencing problems.";

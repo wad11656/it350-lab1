@@ -115,6 +115,7 @@ if (isset($_GET['limit']) && $validparams == TRUE){
 		$validparams = FALSE;
 	}
 	// Check for leading 0's
+	/*
 	if ($validparams == TRUE){
 	$limit_arr = explode(",",$limit);
 		foreach($limit_arr as $item) {
@@ -127,6 +128,7 @@ if (isset($_GET['limit']) && $validparams == TRUE){
 			echo "The value you specified for  your 'limit' parameter has at least 1 integer with leading 0's. Please remove any leading 0's in your 'limit' parameter.";
 		}
 	}
+	*/
 }
 
 // Perform an SQL query

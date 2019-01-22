@@ -114,8 +114,17 @@ if (isset($_GET['limit']) && $validparams == TRUE){
 		echo "The value you specified for  your 'limit' parameter has a comma in the wrong place. The 'limit' parameter either uses 1 numeric value or 2 numeric values separated by a comma.";
 		$validparams = FALSE;
 	}
+	// Check if values go out of range
+	if ($validparams == TRUE){
+		$limit_arr = explode(",",$limit);
+		$sql = 'SELECT * FROM ' . $table;
+		if(intval($limit_arr[0])+intval($limit_arr[1]) > mysqli_num_rows($mysqli->query($sql))){
+			echo "Oops! Parameter error:<br />\n";
+			echo 'The value you specified for  your \'limit\' parameter is out of range of the table. Adjust your \'limit\' value to fit within the ' . mysqli_num_rows($mysqli->query($sql)) . ' rows that are in table \'' . $table . '\'.';
+			$validparams = FALSE;
+		}
+	}
 	// Check for leading 0's
-	/*
 	if ($validparams == TRUE){
 	$limit_arr = explode(",",$limit);
 		foreach($limit_arr as $item) {
@@ -128,7 +137,6 @@ if (isset($_GET['limit']) && $validparams == TRUE){
 			echo "The value you specified for  your 'limit' parameter has at least 1 integer with leading 0's. Please remove any leading 0's in your 'limit' parameter.";
 		}
 	}
-	*/
 }
 
 // Perform an SQL query
@@ -140,7 +148,7 @@ $sql = 'SELECT * FROM ' . $table;
 	if (isset($_GET['limit'])){
 		$sql .= ' LIMIT ' . $limit;
 	}
-	// Print SQL query result
+	// Print result of SQL query as JSON
 	if($result = $mysqli->query($sql)){
 		$result_array = $result->fetch_all(MYSQLI_ASSOC);
 		echo json_encode($result_array);

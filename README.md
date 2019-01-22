@@ -4,7 +4,7 @@ IT350 Lab 1 by Wade Murdock.
 
 ## Functionality:
 
-## Quirks:
+## (Intentional) Quirks:
 
 * Even though accepted by MySQL, a `LIMIT` query that contains values with leading 0's is **rejected**.
 

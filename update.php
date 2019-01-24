@@ -16,37 +16,34 @@ if (isset($_GET['aid']) && is_numeric($_GET['aid'])) {
 }
 
 if (isset($_GET['user'])){
-	$user = filter_var($_GET['user'], FILTER_SANITIZE_STRING);
+	$user = $_GET['user'];
 } else {
 	$user = 'N/A';
 }
 
 if (isset($_GET['secretkey'])){
-	$secretkey = filter_var($_GET['secretkey'], FILTER_SANITIZE_STRING);
+	$secretkey = $_GET['secretkey'];
 } else {
 	$secretkey = 'N/A';
 }
 
 if (isset($_GET['table'])){
-	$table = filter_var($_GET['table'], FILTER_SANITIZE_STRING);
+	$table = $_GET['table'];
 } else {
 	$table = 'N/A';
 }
-
-$validparams = TRUE;
 
 if ((!isset($_GET['user'])) || (!isset($_GET['secretkey'])) || (!isset($_GET['table']))){
 	echo "Oops! Parameter error:<br />\n";
 	echo "All Puppies Unlimited&trade; URL queries require a 'user', 'secretkey' and 'table' parameter. Check you have at least these three in your URL.<br />\n";
 	echo "( Example: http://192.168.50.92/it350site/read.php?user=my_user&secretkey=my_secretkey&table=my_table )";
-	$validparams = FALSE;
 	exit;
 }
 
 // Connecting to and selecting a MySQL database named sakila
 // Hostname: 127.0.0.1, username: your_user, password: your_pass, db: sakila
 $mysqli = new mysqli('127.0.0.1', $user, $secretkey, 'puppies_unlimited');
-
+$validparams = TRUE;
 
 // Oh no! A connect_errno exists so the connection attempt failed!
 if ($mysqli->connect_errno) {
@@ -77,7 +74,7 @@ if ($mysqli->connect_errno) {
 
 // Check if Table exists in Database
 $checktable = "DESCRIBE $table";
-if ((!$mysqli->query($checktable)) && $validparams == TRUE){
+if (!$mysqli->query($checktable)){
 	echo "Oops! Parameter error:<br />\n";
 	echo "The table you specified for your 'table' parameter is not in the Puppies Unlimited&trade; database. Check your spelling and try again.";
 	$validparams = FALSE;
@@ -86,7 +83,7 @@ if ((!$mysqli->query($checktable)) && $validparams == TRUE){
 
 // Check if 'order' Column exists in Table
 if (isset($_GET['order']) && $validparams == TRUE){
-	$order =  filter_var($_GET['order'], FILTER_SANITIZE_STRING);
+	$order = $_GET['order'];
 	if ($mysqli->query("SELECT $order FROM $table")){
 		// Valid 'order' column
 	} else{
@@ -98,7 +95,7 @@ if (isset($_GET['order']) && $validparams == TRUE){
 
 // Check if 'limit' parameters are valid
 if (isset($_GET['limit']) && $validparams == TRUE){
-	$limit = filter_var($_GET['limit'], FILTER_SANITIZE_STRING);
+	$limit = $_GET['limit'];
 	// Check for invalid characters (only numerical and ',' allowed)
 	if (preg_match("/[^0-9\,]/", $limit) && $validparams == TRUE){
     echo "Oops! Parameter error:<br />\n";
@@ -167,7 +164,7 @@ $sql = 'SELECT * FROM ' . $table;
 		$sql .= ' LIMIT ' . $limit;
 	}
 	if (isset($_GET['conditions'])){
-		$sql .= ' WHERE ' . filter_var($_GET['conditions'], FILTER_SANITIZE_STRING);
+		$sql .= ' WHERE ' . $_GET['conditions'];
 	}
 	if (isset($_GET['order'])){
 		$sql .= ' ORDER BY ' . $order;

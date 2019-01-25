@@ -3,6 +3,7 @@ error_reporting(1);
 ini_set('display_startup_errors', true);
 error_reporting(E_ALL);
 ini_set('display_errors', true);
+//mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 // Let's pass in a $_GET variable to our example, in this case
 // it's aid for actor_id in our Sakila database. Let's make it
 // default to 1, and cast it to an integer as to avoid SQL injection
@@ -10,40 +11,43 @@ ini_set('display_errors', true);
 // the scope of this simple example. Example:
 //   http://example.org/script.php?aid=42
 if (isset($_GET['aid']) && is_numeric($_GET['aid'])) {
-    $aid = (int) $_GET['aid'];
+	$aid = (int) $_GET['aid'];
 } else {
-    $aid = 1;
+	$aid = 1;
 }
 
 if (isset($_GET['user'])){
-	$user = $_GET['user'];
+	$user = filter_var($_GET['user'], FILTER_SANITIZE_STRING);
 } else {
 	$user = 'N/A';
 }
 
 if (isset($_GET['secretkey'])){
-	$secretkey = $_GET['secretkey'];
+	$secretkey = filter_var($_GET['secretkey'], FILTER_SANITIZE_STRING);
 } else {
 	$secretkey = 'N/A';
 }
 
 if (isset($_GET['table'])){
-	$table = $_GET['table'];
+	$table = filter_var($_GET['table'], FILTER_SANITIZE_STRING);
 } else {
 	$table = 'N/A';
 }
 
+$validparams = TRUE;
+
 if ((!isset($_GET['user'])) || (!isset($_GET['secretkey'])) || (!isset($_GET['table']))){
 	echo "Oops! Parameter error:<br />\n";
 	echo "All Puppies Unlimited&trade; URL queries require a 'user', 'secretkey' and 'table' parameter. Check you have at least these three in your URL.<br />\n";
-	echo "( Example: http://192.168.50.92/it350site/read.php?user=my_user&secretkey=my_secretkey&table=my_table )";
+	echo "( Example: <b>http://192.168.50.92/it350site/delete.php?user=my_user&secretkey=my_secretkey&table=puppy&puppy_id='6'</b> )";
+	$validparams = FALSE;
 	exit;
 }
 
 // Connecting to and selecting a MySQL database named sakila
 // Hostname: 127.0.0.1, username: your_user, password: your_pass, db: sakila
 $mysqli = new mysqli('127.0.0.1', $user, $secretkey, 'puppies_unlimited');
-$validparams = TRUE;
+
 
 // Oh no! A connect_errno exists so the connection attempt failed!
 if ($mysqli->connect_errno) {
@@ -52,12 +56,12 @@ if ($mysqli->connect_errno) {
     // You do not want to reveal sensitive information
 
     // Let's try this:
-    echo "Oops! Database connection error:<br />\n";
+	echo "Oops! Database connection error:<br />\n";
 
     // Something you should not do on a public site, but this example will show you
     // anyways, is print out MySQL error related information -- you might log this
-    echo "Errno: " . $mysqli->connect_errno . "<br />\n";
-    echo "Error: " . $mysqli->connect_error . "<br />\n";
+	echo "Errno: " . $mysqli->connect_errno . "<br />\n";
+	echo "Error: " . $mysqli->connect_error . "<br />\n";
 	if ($mysqli->connect_errno == 1045){
 		echo "Incorrect credentials. Double-check your credentials and make sure you are authorized to access the Puppies Unlimited&trade; database.";
 	}
@@ -67,129 +71,78 @@ if ($mysqli->connect_errno) {
 	else if ($mysqli->connect_errno == 2002){
 		echo "Connection refused. Make sure you're on the correct network to access the Puppies Unlimited&trade; database and that it's live.";
 	} 
-    $validparams = FALSE;
+	$validparams = FALSE;
     // You might want to show them something nice, but we will simply exit
-    exit;
+	exit;
 }
 
 // Check if Table exists in Database
 $checktable = "DESCRIBE $table";
-if (!$mysqli->query($checktable)){
+if ((!$mysqli->query($checktable)) && $validparams == TRUE){
 	echo "Oops! Parameter error:<br />\n";
 	echo "The table you specified for your 'table' parameter is not in the Puppies Unlimited&trade; database. Check your spelling and try again.";
 	$validparams = FALSE;
 	exit;
 }
 
-// Check if 'order' Column exists in Table
-if (isset($_GET['order']) && $validparams == TRUE){
-	$order = $_GET['order'];
-	if ($mysqli->query("SELECT $order FROM $table")){
-		// Valid 'order' column
-	} else{
-		echo "Oops! Parameter error:<br />\n";
-		echo "The column you specified for your 'order' parameter is not in the $table table. Check your spelling and try again.";
-		$validparams = FALSE;
-	}
-}
-
-// Check if 'limit' parameters are valid
-if (isset($_GET['limit']) && $validparams == TRUE){
-	$limit = $_GET['limit'];
-	// Check for invalid characters (only numerical and ',' allowed)
-	if (preg_match("/[^0-9\,]/", $limit) && $validparams == TRUE){
-    echo "Oops! Parameter error:<br />\n";
-	echo "The value you specified for  your 'limit' parameter contains invalid characters. The 'limit' parameter either uses 1 numeric value or 2 numeric values separated by a comma.";
+if (!isset($_GET['conditions'])){
+	echo "Oops! Parameter error:<br />\n";
+	echo "All Puppies Unlimited&trade; <b>DELETE</b> queries require a 'conditions' parameter.<br />\n";
+	echo "<i>( Example: <b>http://192.168.50.92/it350site/delete.php?user=my_user&secretkey=my_secretkey&table=puppy&puppy_id='6'</b> )</i>";
 	$validparams = FALSE;
-	}
-	// Check for more than 1 comma
-	if ((substr_count($limit, ",") > 1) && $validparams == TRUE){
-		echo "Oops! Parameter error:<br />\n";
-		echo "The value you specified for  your 'limit' parameter contains too many commas. The 'limit' parameter either uses 1 numeric value or 2 numeric values separated by a comma.";
-	    $validparams = FALSE;
-	}
-	// Check for commas at beginning or end
-	if (((strpos($limit, ",") === 0) || (substr($limit, -1) == ",")) && $validparams == TRUE){
-		echo "Oops! Parameter error:<br />\n";
-		echo "The value you specified for  your 'limit' parameter has a comma in the wrong place. The 'limit' parameter either uses 1 numeric value or 2 numeric values separated by a comma.";
-		$validparams = FALSE;
-	}
-	// Check if values go out of range
-	if ($validparams == TRUE){
-		$limit_arr = explode(",",$limit);
-		$sql = 'SELECT * FROM ' . $table;
-		if(intval($limit_arr[0])+intval($limit_arr[1]) > mysqli_num_rows($mysqli->query($sql))){
-			echo "Oops! Parameter error:<br />\n";
-			echo 'The value you specified for  your \'limit\' parameter is out of range for the table. Adjust your \'limit\' value to fit within the <b>' . mysqli_num_rows($mysqli->query($sql)) . '</b> rows that are in table \'' . $table . '\'.';
-			$validparams = FALSE;
-		}
-	}
-	// Check for leading 0's
-	if ($validparams == TRUE){
-	$limit_arr = explode(",",$limit);
-		foreach($limit_arr as $item) {
-			if((string)(intval($item)) !== $item){
-			$validparams = FALSE;
-			}
-		}
-		if ($validparams == FALSE){
-			echo "Oops! Parameter error:<br />\n";
-			echo "The value you specified for  your 'limit' parameter has at least 1 integer with leading 0's. Please remove any leading 0's in your 'limit' parameter.";
-		}
-	}
 }
-
-/*
-if (isset($_GET['conditions']) && $validparams == TRUE){
-	$clean_conditions = $_GET['conditions'];
-	echo $clean_conditions;
-	$revised_conditions = str_replace("%20"," ",$clean_conditions);
-	echo $clean_conditions;
-	echo $revised_conditions;
-	$revised_conditions = preg_replace("!&#39;%?[a-zA-Z0-9]+%?&#39;!","?",$revised_conditions);
-	echo $clean_conditions;
-	echo $revised_conditions;
-	$conditions_array = preg_match_all("!&#39;(%?[a-zA-Z0-9]+%?)&#39;!", $clean_conditions, $condition_matches, PREG_PATTERN_ORDER);
-	echo $clean_conditions;
-	echo $revised_conditions;
-	echo ($conditions_array);
-	echo ($condition_matches);
-}
-*/
 
 // Perform an SQL query
 if ($validparams == TRUE){
-$sql = 'SELECT * FROM ' . $table;
-	if (isset($_GET['limit'])){
-		$sql .= ' LIMIT ' . $limit;
-	}
+	$sql = 'DELETE FROM ' . $table;
 	if (isset($_GET['conditions'])){
-		$sql .= ' WHERE ' . $_GET['conditions'];
-	}
-	if (isset($_GET['order'])){
-		$sql .= ' ORDER BY ' . $order;
-	}
-	// Print result of SQL query as JSON
-	if($result = $mysqli->query($sql)){
-		$result_array = $result->fetch_all(MYSQLI_ASSOC);
-		echo json_encode($result_array);
-	}
-	if (!$result = $mysqli->query($sql)) {
-    // Oh no! The query failed. 
-    echo "Sorry, the website is experiencing problems.";
+		$clean_conditions = filter_var($_GET['conditions'], FILTER_SANITIZE_STRING);
+		$revised_conditions = str_replace("%20"," ",$clean_conditions);
+		$revised_conditions = preg_replace("!&#39;%?[a-zA-Z0-9]+%?&#39;!","?",$revised_conditions);
+		$conditions_array = preg_match_all("!&#39;(%?[a-zA-Z0-9]+%?)&#39;!", $clean_conditions, $condition_matches, PREG_PATTERN_ORDER);
 
-    // Again, do not do this on a public site, but we'll show you how
-    // to get the error information
-    echo "Error: Our query failed to execute and here is why: \n";
-    echo "Query: " . $sql . "\n";
-    echo "Errno: " . $mysqli->errno . "\n";
-    echo "Error: " . $mysqli->error . "\n";
-    exit;
+		$sql .= ' WHERE ' . $revised_conditions;
+	}
+
+	// Set rows_affected
+	$rows_affected = 0;
+	// Print result of SQL query as JSON
+	if ($stmt = $mysqli->prepare($sql)){
+		if ($clean_conditions != False) {
+			$types = "";
+			foreach ($condition_matches[1] as $c) {
+				if (preg_match("![0-9\.]+!",$c)) {
+					$types .= "d";
+				} else {
+					$types .= "s";
+				}
+			}
+			$stmt->bind_param($types, ...$condition_matches[1]);
+		}
+		$stmt->execute();
+		$rows_affected = $stmt->affected_rows;
+	}
+	else{
+   			// Oh no! The query failed. 
+			echo "Oops! MySQL Error:<br />\n";
+			echo "User <b>" . $user . "</b> may not have authority to <b>DELETE</b>. Requires elevated credentials.<br />\n";
+			echo "If you are sure your credentials have <b>DELETE</b> privileges, double-check your syntax.<br />\n";
+			echo "<i>( Example: <b>http://192.168.50.92/it350site/insert.php?user=my_user&secretkey=my_secretkey&table=puppy&puppy_id='6'</b> )</i>";
+		$validparams = FALSE;
+		exit;
+	}
+
+	if ($validparams == TRUE){
+		// Print result of SQL query as JSON
+		$result = $stmt->get_result();
+		if($stmt->execute()){
+			echo "<b>DELETE</b> executed successfully!<br />\n";
+			echo "<b>" . $rows_affected . "</b> row(s) affected.";
+		}
 	}
 }
 
 // The script will automatically free the result and close the MySQL
 // connection when it exits, but let's just do it anyways
-$result->free();
 $mysqli->close();
 ?>

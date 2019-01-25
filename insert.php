@@ -151,9 +151,9 @@ if (($table == 'customer') && ((!in_array("customer_phone", $columns_arr)) && (!
 if (($table == 'customer') && (in_array("customer_email", $columns_arr)) && $validparams == TRUE) {
 	$email_key = array_search("customer_email", $columns_arr);
 	if(!filter_var($values_arr[$email_key], FILTER_VALIDATE_EMAIL)){
-	echo "Oops! Parameter error:<br />\n";
-	echo "Your email value for your 'customer_email' column (<b>" . $values_arr[$email_key] . "</b>) is not a valid email address. Confirm your 'columns' and 'values' parameters are listed in the same comma-delimited order as each other in your URL.<br />\n";
-	$validparams = FALSE;
+		echo "Oops! Parameter error:<br />\n";
+		echo "Your email value for your 'customer_email' column (<b>" . $values_arr[$email_key] . "</b>) is not a valid email address. Confirm your 'columns' and 'values' parameters are listed in the same comma-delimited order as each other in your URL.<br />\n";
+		$validparams = FALSE;
 	}
 }
 
@@ -161,9 +161,9 @@ if (($table == 'customer') && (in_array("customer_email", $columns_arr)) && $val
 if (($table == 'customer') && (in_array("customer_phone", $columns_arr)) && $validparams == TRUE) {
 	$phone_key = array_search("customer_phone", $columns_arr);
 	if((!preg_match("/^[0-9]{3}-[0-9]{3}-[0-9]{4}$/", $values_arr[$phone_key])) && (!preg_match("/^[0-9]{3}-[0-9]{4}$/", $values_arr[$phone_key])) && (!preg_match("/^[0-9]{7}$/", $values_arr[$phone_key])) && (!preg_match("/^[0-9]{10}$/", $values_arr[$phone_key]))){
-	echo "Oops! Parameter error:<br />\n";
-	echo "Your phone value for your 'customer_phone' column (<b>" . $values_arr[$phone_key] . "</b>) is not a valid 7- or 10-digit American phone number. Confirm your 'columns' and 'values' parameters are listed in the same comma-delimited order as each other in your URL.<br />\n";
-	$validparams = FALSE;
+		echo "Oops! Parameter error:<br />\n";
+		echo "Your phone value for your 'customer_phone' column (<b>" . $values_arr[$phone_key] . "</b>) is not a valid 7- or 10-digit American phone number. Confirm your 'columns' and 'values' parameters are listed in the same comma-delimited order as each other in your URL.<br />\n";
+		$validparams = FALSE;
 	}
 }
 
@@ -172,11 +172,11 @@ if (($table == 'customer') && (in_array("customer_age", $columns_arr)) && $valid
 	$customer_age_key = array_search("customer_age", $columns_arr);
 	$value = $values_arr[$customer_age_key];
 	if(!is_numeric($value) || !($value > 0) || !($value == round($value, 0))){
-	echo "Oops! Parameter error:<br />\n";
-	echo "Your age value for your 'customer_age' column (<b>" . $values_arr[$customer_age_key] . "</b>) is not a valid positive integer. Confirm your values are not surrounded by quotes (neither single quotes nor double quotes).<br />\n";
-	echo "Confirm 'customer_age' does not contain any non-numeric characters.<br />\n";
-	echo "Confirm your 'columns' and 'values' parameters are listed in the same comma-delimited order as each other in your URL.<br />\n";
-	$validparams = FALSE;
+		echo "Oops! Parameter error:<br />\n";
+		echo "Your age value for your 'customer_age' column (<b>" . $values_arr[$customer_age_key] . "</b>) is not a valid positive integer. Confirm your values are not surrounded by quotes (neither single quotes nor double quotes).<br />\n";
+		echo "Confirm 'customer_age' does not contain any non-numeric characters.<br />\n";
+		echo "Confirm your 'columns' and 'values' parameters are listed in the same comma-delimited order as each other in your URL.<br />\n";
+		$validparams = FALSE;
 	}
 }
 
@@ -185,11 +185,11 @@ if (($table == 'customer') && (in_array("puppy_age", $columns_arr)) && $validpar
 	$puppy_age_key = array_search("puppy_age", $columns_arr);
 	$value = $values_arr[$puppy_age_key];
 	if(!is_numeric($value) || !($value > 0) || !($value == round($value, 0))) {
-	echo "Oops! Parameter error:<br />\n";
-	echo "Your age value for your 'puppy_age' column (<b>" . $values_arr[$puppy_age_key] . "</b>) is not a valid positive integer. Confirm your values are not surrounded by quotes (neither single quotes nor double quotes).<br />\n";
-	echo "Confirm 'puppy_age' does not contain any non-numeric characters.<br />\n";
-	echo "Confirm your 'columns' and 'values' parameters are listed in the same comma-delimited order as each other in your URL.<br />\n";
-	$validparams = FALSE;
+		echo "Oops! Parameter error:<br />\n";
+		echo "Your age value for your 'puppy_age' column (<b>" . $values_arr[$puppy_age_key] . "</b>) is not a valid positive integer. Confirm your values are not surrounded by quotes (neither single quotes nor double quotes).<br />\n";
+		echo "Confirm 'puppy_age' does not contain any non-numeric characters.<br />\n";
+		echo "Confirm your 'columns' and 'values' parameters are listed in the same comma-delimited order as each other in your URL.<br />\n";
+		$validparams = FALSE;
 	}
 }
 
@@ -197,9 +197,9 @@ if (($table == 'customer') && (in_array("puppy_age", $columns_arr)) && $validpar
 if (($table == 'puppy') && (in_array("puppy_age", $columns_arr)) && $validparams == TRUE) {
 	$puppy_age_key = array_search("puppy_age", $columns_arr);
 	if(!is_int($values_arr[$puppy_age_key])){
-	echo "Oops! Parameter error:<br />\n";
-	echo "Your age value for your 'puppy_age' column (<b>" . $values_arr[$puppy_age_key] . "</b>) is not an integer. Your values should not be surrounded by quotes (neither single quotes nor double quotes). Confirm your 'columns' and 'values' parameters are listed in the same comma-delimited order as each other in your URL.<br />\n";
-	$validparams = FALSE;
+		echo "Oops! Parameter error:<br />\n";
+		echo "Your age value for your 'puppy_age' column (<b>" . $values_arr[$puppy_age_key] . "</b>) is not an integer. Your values should not be surrounded by quotes (neither single quotes nor double quotes). Confirm your 'columns' and 'values' parameters are listed in the same comma-delimited order as each other in your URL.<br />\n";
+		$validparams = FALSE;
 	}
 }
 
@@ -231,9 +231,9 @@ if ($validparams == TRUE){
 		echo "<b>INSERT</b> executed successfully!";
 	} else {
    			// Oh no! The query failed. 
-			echo "Oops! Execution Error:<br />\n";
-			echo "The <b>INSERT</b> did not execute successfully. Make sure you are using only integers for columns like 'age' and 'phone'.<br />\n";
-			echo "<i>( Example: <b>http://192.168.50.92/it350site/insert.php?user=my_user&secretkey=my_secretkey&table=puppy&columns=puppy_name,puppy_location&values=Alfred,Mesa</b> )</i>";
+		echo "Oops! Execution Error:<br />\n";
+		echo "The <b>INSERT</b> did not execute successfully. Make sure you are using only integers for columns like 'age' and 'phone'.<br />\n";
+		echo "<i>( Example: <b>http://192.168.50.92/it350site/insert.php?user=my_user&secretkey=my_secretkey&table=puppy&columns=puppy_name,puppy_location&values=Alfred,Mesa</b> )</i>";
 		$validparams = FALSE;
 		exit;
 	}

@@ -152,7 +152,6 @@ if ($validparams == TRUE){
 	if (isset($_GET['order'])){
 		$sql .= ' ORDER BY ' . $order;
 	}
-	echo "sql: " . $sql;
 
 	// HAS CONDITIONS SQL Query:
 	if (isset($_GET['conditions'])){
@@ -210,14 +209,10 @@ if ($validparams == TRUE){
 			echo json_encode($result_array);
 		}
 		if (!$result = $mysqli->query($sql)) {
-    		// Oh no! The query failed. 
-			echo "Sorry, the website is experiencing problems.";
-    		// Again, do not do this on a public site, but we'll show you how
-    		// to get the error information
-			echo "Error: Our query failed to execute and here is why: \n";
-			echo "Query: " . $sql . "\n";
-			echo "Errno: " . $mysqli->errno . "\n";
-			echo "Error: " . $mysqli->error . "\n";
+   			// Oh no! The query failed. 
+			echo "Oops! Execution Error:<br />\n";
+			echo "The <b>READ</b> did not execute successfully. Please check your syntax.<br />\n";
+			echo "<i>( Example: <b>http://192.168.50.92/it350site/read.php?user=my_user&secretkey=my_secretkey&table=puppy</b> )</i>";
 			exit;
 		}
 	}

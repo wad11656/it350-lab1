@@ -124,10 +124,10 @@ if ($validparams == TRUE){
 	}
 	else{
    			// Oh no! The query failed. 
-			echo "Oops! Execution Error:<br />\n";
-			echo "User <b>" . $user . "</b> may not have authority to <b>DELETE</b>. Requires elevated credentials.<br />\n";
-			echo "If you are sure your credentials have <b>DELETE</b> privileges, double-check your syntax.<br />\n";
-			echo "<i>( Example: <b>http://192.168.50.92/it350site/insert.php?user=my_user&secretkey=my_secretkey&table=puppy&puppy_id='6'</b> )</i>";
+		echo "Oops! Execution Error:<br />\n";
+		echo "The <b>DELETE</b> did not execute successfully. User <b>" . $user . "</b> may not have authority to <b>DELETE</b>. Requires elevated credentials.<br />\n";
+		echo "If you are sure your credentials have <b>DELETE</b> privileges, double-check your syntax (Use <b>single quotes</b> around your parameter values).<br />\n";
+		echo "<i>( Example: <b>http://192.168.50.92/it350site/insert.php?user=my_user&secretkey=my_secretkey&table=puppy&puppy_id='6'</b> )</i>";
 		$validparams = FALSE;
 		exit;
 	}

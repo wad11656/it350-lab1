@@ -22,13 +22,7 @@ IT350 Lab 1 by Wade Murdock.
         |puppy_id(pk)|puppy_name|puppy_age|puppy_breed|puppy_location|puppy_immunizationrecords|puppy_photo|puppy_timeposted|
          -------------------------------------------------------------------------------------------------------------------
 
-   Table: **customer_puppy**
-
-         -------------------------------------------------
-        |customerpuppy_id(pk)|customer_id(fk)|puppy_id(fk)|
-         -------------------------------------------------
-
-   Table: **purchase** (empty)
+   Table: **purchase** (currently unimplemented)
 
          ----------------------------------------------------------
         |purchase_id(pk)|customer_id(fk)|puppy_id(fk)|purchase_time|

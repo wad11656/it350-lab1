@@ -1,8 +1,5 @@
 <?php
-error_reporting(1);
-ini_set('display_startup_errors', true);
-error_reporting(E_ALL);
-ini_set('display_errors', true);
+error_reporting(0);
 
 // Set $_GET variables
 if (isset($_GET['aid']) && is_numeric($_GET['aid'])) {

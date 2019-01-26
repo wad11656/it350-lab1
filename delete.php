@@ -1,21 +1,7 @@
 <?php
-error_reporting(1);
-ini_set('display_startup_errors', true);
-error_reporting(E_ALL);
-ini_set('display_errors', true);
-//mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
-// Let's pass in a $_GET variable to our example, in this case
-// it's aid for actor_id in our Sakila database. Let's make it
-// default to 1, and cast it to an integer as to avoid SQL injection
-// and/or related security problems. Handling all of this goes beyond
-// the scope of this simple example. Example:
-//   http://example.org/script.php?aid=42
-if (isset($_GET['aid']) && is_numeric($_GET['aid'])) {
-	$aid = (int) $_GET['aid'];
-} else {
-	$aid = 1;
-}
+error_reporting(0);
 
+// Set $_GET variables
 if (isset($_GET['user'])){
 	$user = filter_var($_GET['user'], FILTER_SANITIZE_STRING);
 } else {

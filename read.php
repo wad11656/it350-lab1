@@ -43,9 +43,6 @@ if ($mysqli->connect_errno) {
     // The connection failed
 	echo "Oops! Database connection error:<br />\n";
 
-	// Print MySQL Errors
-	echo "Errno: " . $mysqli->connect_errno . "<br />\n";
-	echo "Error: " . $mysqli->connect_error . "<br />\n";
 	// ERROR 1045 - Wrong credentials
 	if ($mysqli->connect_errno == 1045){
 		echo "Incorrect credentials. Double-check your credentials and make sure you are authorized to access the Puppies Unlimited&trade; database.";
@@ -171,14 +168,9 @@ if ($validparams == TRUE){
 		}
 		else{
    			// Oh no! The query failed. 
-			echo "Sorry, the website is experiencing problems.";
-
-    		// Again, do not do this on a public site, but we'll show you how
-    		// to get the error information
-			echo "Error: Our query failed to execute and here is why: \n";
-			echo "Query: " . $sql . "\n";
-			echo "Errno: " . $mysqli->errno . "\n";
-			echo "Error: " . $mysqli->error . "\n";
+			echo "Oops! Execution Error:<br />\n";
+			echo "The <b>READ</b> did not execute successfully. Please check your syntax.<br />\n";
+			echo "<i>( Example: <b>http://192.168.50.92/it350site/read.php?user=my_user&secretkey=my_secretkey&table=puppy</b> )</i>";
 			$validparams = FALSE;
 			exit;
 		}

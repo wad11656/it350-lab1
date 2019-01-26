@@ -3,12 +3,8 @@ error_reporting(1);
 ini_set('display_startup_errors', true);
 error_reporting(E_ALL);
 ini_set('display_errors', true);
-// Let's pass in a $_GET variable to our example, in this case
-// it's aid for actor_id in our Sakila database. Let's make it
-// default to 1, and cast it to an integer as to avoid SQL injection
-// and/or related security problems. Handling all of this goes beyond
-// the scope of this simple example. Example:
-//   http://example.org/script.php?aid=42
+
+// Set $_GET variables
 if (isset($_GET['aid']) && is_numeric($_GET['aid'])) {
 	$aid = (int) $_GET['aid'];
 } else {
@@ -59,8 +55,6 @@ if ($mysqli->connect_errno) {
 
     // Something you should not do on a public site, but this example will show you
     // anyways, is print out MySQL error related information -- you might log this
-	echo "Errno: " . $mysqli->connect_errno . "<br />\n";
-	echo "Error: " . $mysqli->connect_error . "<br />\n";
 	if ($mysqli->connect_errno == 1045){
 		echo "Incorrect credentials. Double-check your credentials and make sure you are authorized to access the Puppies Unlimited&trade; database.";
 	}
@@ -121,7 +115,7 @@ if (isset($_GET['values']) && $validparams == TRUE){
 	$values_arr = explode(",",$values);
 	if (count($columns_arr) != count($values_arr)){
 		echo "Oops! Parameter error:<br />\n";
-		echo "The number of values you specified (<b>" . count($values_arr) . ") does not match the number of columns you specified (" . count($columns_arr) .").";
+		echo "The number of values you specified (<b>" . count($values_arr) . "</b>) does not match the number of columns you specified (<b>" . count($columns_arr) ."</b>).";
 		$validparams = FALSE;
 	}
 }
@@ -143,24 +137,28 @@ if (($table == 'customer') && ((!in_array("customer_phone", $columns_arr)) && (!
 	echo "(1) customer_name,customer_address<br />\n";
 	echo "(2) customer_name,customer_phone<br />\n";
 	echo "(3) customer_name,customer_email<br />\n";
-	echo "<i>( Example: <b>http://192.168.50.92/it350site/insert.php?user=my_user&secretkey=my_secretkey&table=customer&columns=customer_name,customer_email&values=Bob,bob@gmail.com</b> )</i>";
+	echo "<i>( Example: <b>http://192.168.50.92/it350site/insert.php?user=my_user&secretkey=my_secretkey&table=customer&columns=customer_name,customer_email&values='Bob','bob@gmail.com'</b> )</i>";
 	$validparams = FALSE;
 }
 
 // Check if 'customer_email' is valid
+/*
 if (($table == 'customer') && (in_array("customer_email", $columns_arr)) && $validparams == TRUE) {
 	$email_key = array_search("customer_email", $columns_arr);
-	if(!filter_var($values_arr[$email_key], FILTER_VALIDATE_EMAIL)){
+	$email_quoteless = substr($values_arr[$email_key],5,-5);
+	echo $email_quoteless;
+	if(!filter_var(($email_quoteless), FILTER_VALIDATE_EMAIL)){
 		echo "Oops! Parameter error:<br />\n";
 		echo "Your email value for your 'customer_email' column (<b>" . $values_arr[$email_key] . "</b>) is not a valid email address. Confirm your 'columns' and 'values' parameters are listed in the same comma-delimited order as each other in your URL.<br />\n";
 		$validparams = FALSE;
 	}
 }
+*/
 
 // Check if 'customer_phone' is valid
 if (($table == 'customer') && (in_array("customer_phone", $columns_arr)) && $validparams == TRUE) {
 	$phone_key = array_search("customer_phone", $columns_arr);
-	if((!preg_match("/^[0-9]{3}-[0-9]{3}-[0-9]{4}$/", $values_arr[$phone_key])) && (!preg_match("/^[0-9]{3}-[0-9]{4}$/", $values_arr[$phone_key])) && (!preg_match("/^[0-9]{7}$/", $values_arr[$phone_key])) && (!preg_match("/^[0-9]{10}$/", $values_arr[$phone_key]))){
+	if((!preg_match("/^[0-9]{3}-[0-9]{3}-[0-9]{4}$/", substr($values_arr[$phone_key],5,-5))) && (!preg_match("/^[0-9]{3}-[0-9]{4}$/", substr($values_arr[$phone_key],5,-5))) && (!preg_match("/^[0-9]{7}$/", substr($values_arr[$phone_key],5,-5))) && (!preg_match("/^[0-9]{10}$/", substr($values_arr[$phone_key],5,-5)))) {
 		echo "Oops! Parameter error:<br />\n";
 		echo "Your phone value for your 'customer_phone' column (<b>" . $values_arr[$phone_key] . "</b>) is not a valid 7- or 10-digit American phone number. Confirm your 'columns' and 'values' parameters are listed in the same comma-delimited order as each other in your URL.<br />\n";
 		$validparams = FALSE;
@@ -170,7 +168,7 @@ if (($table == 'customer') && (in_array("customer_phone", $columns_arr)) && $val
 // Check if 'customer_age' is positive INT
 if (($table == 'customer') && (in_array("customer_age", $columns_arr)) && $validparams == TRUE) {
 	$customer_age_key = array_search("customer_age", $columns_arr);
-	$value = $values_arr[$customer_age_key];
+	$value = substr($values_arr[$customer_age_key],5,-5);
 	if(!is_numeric($value) || !($value > 0) || !($value == round($value, 0))){
 		echo "Oops! Parameter error:<br />\n";
 		echo "Your age value for your 'customer_age' column (<b>" . $values_arr[$customer_age_key] . "</b>) is not a valid positive integer. Confirm your values are not surrounded by quotes (neither single quotes nor double quotes).<br />\n";
@@ -183,7 +181,7 @@ if (($table == 'customer') && (in_array("customer_age", $columns_arr)) && $valid
 // Check if 'puppy_age' is positive INT
 if (($table == 'customer') && (in_array("puppy_age", $columns_arr)) && $validparams == TRUE) {
 	$puppy_age_key = array_search("puppy_age", $columns_arr);
-	$value = $values_arr[$puppy_age_key];
+	$value = substr($values_arr[$puppy_age_key],5,-5);
 	if(!is_numeric($value) || !($value > 0) || !($value == round($value, 0))) {
 		echo "Oops! Parameter error:<br />\n";
 		echo "Your age value for your 'puppy_age' column (<b>" . $values_arr[$puppy_age_key] . "</b>) is not a valid positive integer. Confirm your values are not surrounded by quotes (neither single quotes nor double quotes).<br />\n";
@@ -193,6 +191,7 @@ if (($table == 'customer') && (in_array("puppy_age", $columns_arr)) && $validpar
 	}
 }
 
+/*
 // Check if puppy_age is int
 if (($table == 'puppy') && (in_array("puppy_age", $columns_arr)) && $validparams == TRUE) {
 	$puppy_age_key = array_search("puppy_age", $columns_arr);
@@ -202,6 +201,7 @@ if (($table == 'puppy') && (in_array("puppy_age", $columns_arr)) && $validparams
 		$validparams = FALSE;
 	}
 }
+*/
 
 if ($validparams == TRUE){
 // Add columns and values to SQL statement
@@ -213,6 +213,16 @@ if ($validparams == TRUE){
 		}
 	}
 
+	if (isset($_GET['values'])){
+		$clean_values = filter_var($_GET['values'], FILTER_SANITIZE_STRING);
+		$revised_values = str_replace("%20"," ",$clean_values);
+		$revised_values = preg_replace("!&#39;%?[a-zA-Z0-9]+%?&#39;!","?",$revised_values);
+		$values_array = preg_match_all("!&#39;(%?[a-zA-Z0-9]+%?)&#39;!", $clean_values, $value_matches, PREG_PATTERN_ORDER);
+
+		$sql .= ') VALUES (' . $revised_values . ')';
+	}
+
+	/*
 	$sql .= ') VALUES (';
 
 	for($k = 0; $k < count($values_arr); $k++){
@@ -223,19 +233,39 @@ if ($validparams == TRUE){
 	}
 
 	$sql .= ")";
+	*/
 
-	echo $sql;
-
+	$rows_affected = 0;
 	// Perform an SQL query
-	if(($validparams == TRUE) && ($result = $mysqli->query($sql))){
-		echo "<b>INSERT</b> executed successfully!";
-	} else {
-   			// Oh no! The query failed. 
+	if ($stmt = $mysqli->prepare($sql)){
+		if ($clean_values != False) {
+			$types = "";
+			foreach ($value_matches[1] as $c) {
+				if (preg_match("![0-9\.]+!",$c)) {
+					$types .= "d";
+				} else {
+					$types .= "s";
+				}
+			}
+			$stmt->bind_param($types, ...$value_matches[1]);
+		}
+		$stmt->execute();
+		$rows_affected = $stmt->affected_rows;
+	}
+	else{
+   		// Oh no! The query failed. 
 		echo "Oops! Execution Error:<br />\n";
-		echo "The <b>INSERT</b> did not execute successfully. Make sure you are using only integers for columns like 'age' and 'phone'.<br />\n";
-		echo "<i>( Example: <b>http://192.168.50.92/it350site/insert.php?user=my_user&secretkey=my_secretkey&table=puppy&columns=puppy_name,puppy_location&values=Alfred,Mesa</b> )</i>";
+		echo "The <b>INSERT</b> did not execute successfully. Please check your syntax.<br />\n";
+		echo "<i>( Example: <b>http://192.168.50.92/it350site/insert.php?user=my_user&secretkey=my_secretkey&table=customer&columns=customer_name,customer_email&values='Bob','bob@gmail.com'</b> )</i>";
 		$validparams = FALSE;
 		exit;
+	}
+
+	if ($validparams == TRUE){
+		// Print result of SQL query as JSON
+		$result = $stmt->get_result();
+		echo "<b>INSERT</b> executed successfully!<br />\n";
+		echo "<b>" . $rows_affected . "</b> row(s) affected.";
 	}
 }
 

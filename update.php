@@ -41,19 +41,19 @@ $mysqli = new mysqli('127.0.0.1', $user, $secretkey, 'puppies_unlimited');
 // Oh no! A connect_errno exists so the connection attempt failed!
 if ($mysqli->connect_errno) {
     // The connection failed
-	echo "Oops! Database connection error:<br />\n";
+	echo "Oops! Database connection error";
 
 	// ERROR 1045 - Wrong credentials
 	if ($mysqli->connect_errno == 1045){
-		echo "Incorrect credentials. Double-check your credentials and make sure you are authorized to access the Puppies Unlimited&trade; database.";
+		echo ":<br />\nIncorrect credentials. Double-check your credentials and make sure you are authorized to access the Puppies Unlimited&trade; database.";
 	}
 	// ERROR 1049 - Unknown database
 	else if ($mysqli->connect_errno == 1049){
-		echo "Unknown database. Make sure the database you're trying to connect to exists.";
+		echo ":<br />\nUnknown database. Make sure the database you're trying to connect to exists.";
 	} 
 	// ERROR 2002 - Connection refused
 	else if ($mysqli->connect_errno == 2002){
-		echo "Connection refused. Make sure you're on the correct network to access the Puppies Unlimited&trade; database and that it's live.";
+		echo ":<br />\nConnection refused. Make sure you're on the correct network to access the Puppies Unlimited&trade; database and that it's live.";
 	} 
 	$validparams = FALSE;
 	exit;

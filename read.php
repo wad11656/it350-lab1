@@ -41,19 +41,19 @@ $mysqli = new mysqli('127.0.0.1', $user, $secretkey, 'puppies_unlimited');
 // Oh no! A connect_errno exists so the connection attempt failed!
 if ($mysqli->connect_errno) {
     // The connection failed
-	echo "Oops! Database connection error:<br />\n";
+	echo "Oops! Database connection error";
 
 	// ERROR 1045 - Wrong credentials
 	if ($mysqli->connect_errno == 1045){
-		echo "Incorrect credentials. Double-check your credentials and make sure you are authorized to access the Puppies Unlimited&trade; database.";
+		echo ":<br />\nIncorrect credentials. Double-check your credentials and make sure you are authorized to access the Puppies Unlimited&trade; database.";
 	}
 	// ERROR 1049 - Unknown database
 	else if ($mysqli->connect_errno == 1049){
-		echo "Unknown database. Make sure the database you're trying to connect to exists.";
+		echo ":<br />\nUnknown database. Make sure the database you're trying to connect to exists.";
 	} 
 	// ERROR 2002 - Connection refused
 	else if ($mysqli->connect_errno == 2002){
-		echo "Connection refused. Make sure you're on the correct network to access the Puppies Unlimited&trade; database and that it's live.";
+		echo ":<br />\nConnection refused. Make sure you're on the correct network to access the Puppies Unlimited&trade; database and that it's live.";
 	} 
 	$validparams = FALSE;
 	exit;
@@ -105,7 +105,14 @@ if (isset($_GET['limit']) && $validparams == TRUE){
 	if ($validparams == TRUE){
 		$limit_arr = explode(",",$limit);
 		$sql = 'SELECT * FROM ' . $table;
-		if(intval($limit_arr[0])+intval($limit_arr[1]) > mysqli_num_rows($mysqli->query($sql))){
+		if (count($limit_arr) == 1){
+			if(intval($limit_arr[0]) > mysqli_num_rows($mysqli->query($sql))){
+				echo "Oops! Parameter error:<br />\n";
+				echo 'The value you specified for  your \'limit\' parameter is out of range for the table. Adjust your \'limit\' value to fit within the <b>' . mysqli_num_rows($mysqli->query($sql)) . '</b> rows that are in table \'' . $table . '\'.';
+				$validparams = FALSE;
+			}
+		}
+		else if(intval($limit_arr[0])+intval($limit_arr[1]) > mysqli_num_rows($mysqli->query($sql))){
 			echo "Oops! Parameter error:<br />\n";
 			echo 'The value you specified for  your \'limit\' parameter is out of range for the table. Adjust your \'limit\' value to fit within the <b>' . mysqli_num_rows($mysqli->query($sql)) . '</b> rows that are in table \'' . $table . '\'.';
 			$validparams = FALSE;
@@ -130,10 +137,7 @@ if (isset($_GET['limit']) && $validparams == TRUE){
 if ($validparams == TRUE){
 	// Append `SELECT * FROM`
 	$sql = 'SELECT * FROM ' . $table;
-	// Append `LIMIT [limit]`
-	if (isset($_GET['limit'])){
-		$sql .= ' LIMIT ' . $limit;
-	}
+
 	// Clean and append conditions
 	if (isset($_GET['conditions'])){
 		$clean_conditions = filter_var($_GET['conditions'], FILTER_SANITIZE_STRING);
@@ -145,9 +149,14 @@ if ($validparams == TRUE){
 		$sql .= ' WHERE ' . $revised_conditions;
 	}
 
-	// Append `ORDER BY [order]`
+		// Append `ORDER BY [order]`
 	if (isset($_GET['order'])){
 		$sql .= ' ORDER BY ' . $order;
+	}
+
+	// Append `LIMIT [limit]`
+	if (isset($_GET['limit'])){
+		$sql .= ' LIMIT ' . $limit;
 	}
 
 	// HAS CONDITIONS SQL Query:
@@ -186,14 +195,14 @@ if ($validparams == TRUE){
 	// WITHOUT CONDITIONS SQL query:
 	else if ($validparams == TRUE){
 		$sql = 'SELECT * FROM ' . $table;
-		if (isset($_GET['limit'])){
-			$sql .= ' LIMIT ' . $limit;
-		}
 		if (isset($_GET['conditions'])){
 			$sql .= ' WHERE ' . filter_var($_GET['conditions'], FILTER_SANITIZE_STRING);
 		}
 		if (isset($_GET['order'])){
 			$sql .= ' ORDER BY ' . $order;
+		}
+		if (isset($_GET['limit'])){
+			$sql .= ' LIMIT ' . $limit;
 		}
 		// Print result of SQL query as JSON
 		if($result = $mysqli->query($sql)){
@@ -212,6 +221,5 @@ if ($validparams == TRUE){
 
 // The script will automatically free the result and close the MySQL
 // connection when it exits, but let's just do it anyways
-$result->free();
 $mysqli->close();
 ?>

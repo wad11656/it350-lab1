@@ -25,7 +25,7 @@ $validparams = TRUE;
 if ((!isset($_GET['user'])) || (!isset($_GET['secretkey'])) || (!isset($_GET['table']))){
 	echo "Oops! Parameter error:<br />\n";
 	echo "All Puppies Unlimited&trade; URL queries require a 'user', 'secretkey' and 'table' parameter. Check you have at least these three in your URL.<br />\n";
-	echo "( Example: <b>http://192.168.50.92/it350site/delete.php?user=my_user&secretkey=my_secretkey&table=puppy&puppy_id='6'</b> )";
+	echo "( Example: <b>http://40.117.58.200/it350site/delete.php?user=my_user&secretkey=my_secretkey&table=puppy&puppy_id='6'</b> )";
 	$validparams = FALSE;
 	exit;
 }
@@ -74,7 +74,7 @@ if ((!$mysqli->query($checktable)) && $validparams == TRUE){
 if (!isset($_GET['conditions'])){
 	echo "Oops! Parameter error:<br />\n";
 	echo "All Puppies Unlimited&trade; <b>DELETE</b> queries require a 'conditions' parameter.<br />\n";
-	echo "<i>( Example: <b>http://192.168.50.92/it350site/delete.php?user=my_user&secretkey=my_secretkey&table=puppy&puppy_id='6'</b> )</i>";
+	echo "<i>( Example: <b>http://40.117.58.200/it350site/delete.php?user=my_user&secretkey=my_secretkey&table=puppy&puppy_id='6'</b> )</i>";
 	$validparams = FALSE;
 }
 
@@ -113,7 +113,7 @@ if ($validparams == TRUE){
 		echo "Oops! Execution Error:<br />\n";
 		echo "The <b>DELETE</b> did not execute successfully. User <b>" . $user . "</b> may not have authority to <b>DELETE</b>. Requires elevated credentials.<br />\n";
 		echo "If you are sure your credentials have <b>DELETE</b> privileges, double-check your syntax (Use <b>single quotes</b> around your non-column 'conditions' values).<br />\n";
-		echo "<i>( Example: <b>http://192.168.50.92/it350site/insert.php?user=my_user&secretkey=my_secretkey&table=puppy&puppy_id='6'</b> )</i>";
+		echo "<i>( Example: <b>http://40.117.58.200/it350site/insert.php?user=my_user&secretkey=my_secretkey&table=puppy&puppy_id='6'</b> )</i>";
 		$validparams = FALSE;
 		exit;
 	}

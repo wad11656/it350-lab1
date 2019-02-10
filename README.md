@@ -4,7 +4,7 @@ IT350 Lab 1 by Wade Murdock.
 
 GitHub: https://github.com/wad11656/it350-lab1
 
-API: http://40.117.89.11/it350site/
+API: http://40.117.58.200/it350site/
 
 ## Database Structure:
 
@@ -36,19 +36,19 @@ API: http://40.117.89.11/it350site/
 
 ### READ.PHP Example Query:
 
-`http://40.117.89.11/it350site/read.php?user=employee&secretkey=123654&table=puppy&order=puppy_age&limit=5&conditions=puppy_name%20LIKE%20%27Alfred%27`
+`http://40.117.58.200/it350site/read.php?user=employee&secretkey=123654&table=puppy&order=puppy_age&limit=5&conditions=puppy_name%20LIKE%20%27Alfred%27`
 
 ### INSERT.PHP Example Query:
 
-`http://40.117.89.11/it350site/insert.php?user=employee&secretkey=123654&table=customer&columns=customer_name,customer_age,customer_address,customer_phone,customer_email&values=%27George%27,%2735%27,%271234%27,%271234567%27,%271234%27`
+`http://40.117.58.200/it350site/insert.php?user=employee&secretkey=123654&table=customer&columns=customer_name,customer_age,customer_address,customer_phone,customer_email&values=%27George%27,%2735%27,%271234%27,%271234567%27,%271234%27`
 
 ### UPDATE.PHP Example Query:
 
-`http://40.117.89.11/it350site/update.php?user=employee&secretkey=123654&table=customer&set=customer_name=%27Phil%27&conditions=customer_id=%273%27`
+`http://40.117.58.200/it350site/update.php?user=employee&secretkey=123654&table=customer&set=customer_name=%27Phil%27&conditions=customer_id=%273%27`
 
 ### DELETE.PHP Example Query:
 
-`http://40.117.89.11/it350site/delete.php?user=employeeadmin&secretkey=321456&table=customer&conditions=customer_id=%272%27`
+`http://40.117.58.200/it350site/delete.php?user=employeeadmin&secretkey=321456&table=customer&conditions=customer_id=%272%27`
 
 ## (Intentional) Quirks:
 

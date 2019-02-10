@@ -32,7 +32,7 @@ $validparams = TRUE;
 if ((!isset($_GET['user'])) || (!isset($_GET['secretkey'])) || (!isset($_GET['table']))){
 	echo "Oops! Parameter error:<br />\n";
 	echo "All Puppies Unlimited&trade; URL queries require a 'user', 'secretkey' and 'table' parameter. Check you have at least these three in your URL.<br />\n";
-	echo "<i>( Example: <b>http://192.168.50.92/it350site/insert.php?user=my_user&secretkey=my_secretkey&table=puppy&columns=puppy_name,puppy_location&values='Alfred','Mesa'</b> )</i>";
+	echo "<i>( Example: <b>http://40.117.58.200/it350site/insert.php?user=my_user&secretkey=my_secretkey&table=puppy&columns=puppy_name,puppy_location&values='Alfred','Mesa'</b> )</i>";
 	$validparams = FALSE;
 	exit;
 }
@@ -80,7 +80,7 @@ if ((!$mysqli->query($checktable)) && $validparams == TRUE){
 if ((!isset($_GET['columns'])) || (!isset($_GET['values']))){
 	echo "Oops! Parameter error:<br />\n";
 	echo "All Puppies Unlimited&trade; <b>INSERT</b> queries require a 'columns' and 'values' parameter.<br />\n";
-	echo "<i>( Example: <b>http://192.168.50.92/it350site/insert.php?user=my_user&secretkey=my_secretkey&table=puppy&columns=puppy_name,puppy_location&values='Alfred','Mesa'</b> )</i>";
+	echo "<i>( Example: <b>http://40.117.58.200/it350site/insert.php?user=my_user&secretkey=my_secretkey&table=puppy&columns=puppy_name,puppy_location&values='Alfred','Mesa'</b> )</i>";
 	$validparams = FALSE;
 }
 
@@ -122,7 +122,7 @@ if (isset($_GET['values']) && $validparams == TRUE){
 if (($table == 'puppy') && (!in_array("puppy_name", $columns_arr)) && $validparams == TRUE) {
 	echo "Oops! Parameter error:<br />\n";
 	echo "Your <b>INSERT</b> 'columns' parameter for table <b>" . $table . "</b> needs to at least include a <b>puppy_name</b>.<br />\n";
-	echo "<i>( Example: <b>http://192.168.50.92/it350site/insert.php?user=my_user&secretkey=my_secretkey&table=puppy&columns=puppy_name&values='Alfred'</b> )</i>";
+	echo "<i>( Example: <b>http://40.117.58.200/it350site/insert.php?user=my_user&secretkey=my_secretkey&table=puppy&columns=puppy_name&values='Alfred'</b> )</i>";
 	$validparams = FALSE;
 }
 
@@ -130,7 +130,7 @@ if (($table == 'puppy') && (!in_array("puppy_name", $columns_arr)) && $validpara
 if (($table == 'customer') && (!in_array("customer_name", $columns_arr)) && $validparams == TRUE) {
 	echo "Oops! Parameter error:<br />\n";
 	echo "Your <b>INSERT</b> 'columns' parameter for table <b>" . $table . "</b> needs to at least include a <b>customer_name</b>.<br />\n";
-	echo "<i>( Example: <b>http://192.168.50.92/it350site/insert.php?user=my_user&secretkey=my_secretkey&table=customer&columns=customer_name&values='Bob'</b> )</i>";
+	echo "<i>( Example: <b>http://40.117.58.200/it350site/insert.php?user=my_user&secretkey=my_secretkey&table=customer&columns=customer_name&values='Bob'</b> )</i>";
 	$validparams = FALSE;
 }
 
@@ -238,7 +238,7 @@ if ($validparams == TRUE){
    		// Oh no! The query failed. 
 		echo "Oops! Execution Error:<br />\n";
 		echo "The <b>INSERT</b> did not execute successfully. Please check your syntax.<br />\n";
-		echo "<i>( Example: <b>http://192.168.50.92/it350site/insert.php?user=my_user&secretkey=my_secretkey&table=customer&columns=customer_name,customer_email&values='Bob','bob@gmail.com'</b> )</i>";
+		echo "<i>( Example: <b>http://40.117.58.200/it350site/insert.php?user=my_user&secretkey=my_secretkey&table=customer&columns=customer_name,customer_email&values='Bob','bob@gmail.com'</b> )</i>";
 		$validparams = FALSE;
 		exit;
 	}

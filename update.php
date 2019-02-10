@@ -26,7 +26,7 @@ $validparams = TRUE;
 if ((!isset($_GET['user'])) || (!isset($_GET['secretkey'])) || (!isset($_GET['table']))){
 	echo "Oops! Parameter error:<br />\n";
 	echo "All Puppies Unlimited&trade; URL queries require a 'user', 'secretkey' and 'table' parameter. Check you have at least these three in your URL.<br />\n";
-	echo "<i>( Example: <b>http://192.168.50.92/it350site/read.php?user=my_user&secretkey=my_secretkey&table=puppy</b> )</i>";
+	echo "<i>( Example: <b>http://40.117.58.200/it350site/read.php?user=my_user&secretkey=my_secretkey&table=puppy</b> )</i>";
 	$validparams = FALSE;
 	exit;
 }
@@ -69,7 +69,7 @@ if ((!$mysqli->query($checktable)) && $validparams == TRUE){
 if ((!isset($_GET['set']))) {
 	echo "Oops! Parameter error:<br />\n";
 	echo "All Puppies Unlimited&trade; <b>UPDATE</b> queries require a 'set', parameter.<br />\n";
-	echo "<i>( Example: <b>http://192.168.50.92/it350site/update.php?user=my_user&set=my_secretkey&table=puppy&set=puppy_age='5'&conditions=id='17'</b> )</i>";
+	echo "<i>( Example: <b>http://40.117.58.200/it350site/update.php?user=my_user&set=my_secretkey&table=puppy&set=puppy_age='5'&conditions=id='17'</b> )</i>";
 	$validparams = FALSE;
 	exit;
 }
@@ -132,7 +132,7 @@ if ($validparams == TRUE){
    			// Oh no! The query failed. 
 			echo "Oops! Execution Error:<br />\n";
 			echo "The <b>UPDATE</b> did not execute successfully. Please check your syntax.<br />\n";
-			echo "<i>( Example: <b>http://192.168.50.92/it350site/update.php?user=my_user&set=my_secretkey&table=puppy&set=puppy_age='5'&conditions=id='17'</b> )</i>";
+			echo "<i>( Example: <b>http://40.117.58.200/it350site/update.php?user=my_user&set=my_secretkey&table=puppy&set=puppy_age='5'&conditions=id='17'</b> )</i>";
 			$validparams = FALSE;
 			exit;
 		}
@@ -168,7 +168,7 @@ if ($validparams == TRUE){
    			// Oh no! The query failed. 
 			echo "Oops! Execution Error:<br />\n";
 			echo "The <b>UPDATE</b> did not execute successfully. Please check your syntax.<br />\n";
-			echo "<i>( Example: <b>http://192.168.50.92/it350site/update.php?user=my_user&set=my_secretkey&table=puppy&set=puppy_age='5'&conditions=id='17'</b> )</i>";
+			echo "<i>( Example: <b>http://40.117.58.200/it350site/update.php?user=my_user&set=my_secretkey&table=puppy&set=puppy_age='5'&conditions=id='17'</b> )</i>";
 			$validparams = FALSE;
 			exit;
 		}

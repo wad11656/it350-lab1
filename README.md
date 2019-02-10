@@ -2,6 +2,10 @@
 
 IT350 Lab 1 by Wade Murdock.
 
+GitHub: https://github.com/wad11656/it350-lab1
+
+API: http://40.117.89.11/it350site/
+
 ## Database Structure:
 
 ### Database: **puppies_unlimited**
@@ -32,19 +36,19 @@ IT350 Lab 1 by Wade Murdock.
 
 ### READ.PHP Example Query:
 
-`http://192.168.50.92/it350site/read.php?user=employee&secretkey=123654&table=puppy&order=puppy_age&limit=5&conditions=puppy_name%20LIKE%20%27Alfred%27`
+`http://40.117.89.11/it350site/read.php?user=employee&secretkey=123654&table=puppy&order=puppy_age&limit=5&conditions=puppy_name%20LIKE%20%27Alfred%27`
 
 ### INSERT.PHP Example Query:
 
-`http://192.168.50.92/it350site/insert.php?user=employee&secretkey=123654&table=customer&columns=customer_name,customer_age,customer_address,customer_phone,customer_email&values=%27George%27,%2735%27,%271234%27,%271234567%27,%271234%27`
+`http://40.117.89.11/it350site/insert.php?user=employee&secretkey=123654&table=customer&columns=customer_name,customer_age,customer_address,customer_phone,customer_email&values=%27George%27,%2735%27,%271234%27,%271234567%27,%271234%27`
 
 ### UPDATE.PHP Example Query:
 
-`http://192.168.50.92/it350site/update.php?user=employee&secretkey=123654&table=customer&set=customer_name=%27Phil%27&conditions=customer_id=%273%27`
+`http://40.117.89.11/it350site/update.php?user=employee&secretkey=123654&table=customer&set=customer_name=%27Phil%27&conditions=customer_id=%273%27`
 
 ### DELETE.PHP Example Query:
 
-`http://192.168.50.92/it350site/delete.php?user=employeeadmin&secretkey=321456&table=customer&conditions=customer_id=%272%27`
+`http://40.117.89.11/it350site/delete.php?user=employeeadmin&secretkey=321456&table=customer&conditions=customer_id=%272%27`
 
 ## (Intentional) Quirks:
 
@@ -68,29 +72,9 @@ IT350 Lab 1 by Wade Murdock.
 
 ### INSERT.PHP:
 
-* `INSERT` queries for the table `puppy` need one of the following minimum criteria:
+* `INSERT` queries for the table `puppy` need at least a `puppy_name`.
 
-    `puppy_location`,`puppy_photo`
-
-    OR
-    
-    `puppy_name`,`puppy_location`
-
-    ...because otherwise, there is not enough identifying information per table entry to distinguish one dog from another.
-
-* `INSERT` queries for the table `customer` need one of the following minimum criteria:
-
-    `customer_name`,`customer_address`
-
-    OR
-
-    `customer_name`,`customer_phone`
-
-    OR
-
-    `customer_name`,`customer_email`
-
-    ...because at the very least, Puppies Unlimitied&trade; needs to know a customer's name and have a way to contact them.
+* `INSERT` queries for the table `customer` need at least a `customer_name`.
 
 * Only **7- or 10- digit** `customer_phone` numbers are accepted in the `customer` table (i.e. `5554321`).
 

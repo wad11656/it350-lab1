@@ -1,5 +1,6 @@
 <?php
-error_reporting(0);
+error_reporting(E_ALL);
+ini_set('display_errors', '1');
 
 // Set $_GET variables
 if (isset($_GET['aid']) && is_numeric($_GET['aid'])) {
@@ -120,7 +121,7 @@ if (isset($_GET['values']) && $validparams == TRUE){
 // Check if minimum requirements for 'columns' is met for 'puppy' table
 if (($table == 'puppy') && (!in_array("puppy_name", $columns_arr)) && $validparams == TRUE) {
 	echo "Oops! Parameter error:<br />\n";
-	echo "Your <b>INSERT</b> 'columns' parameter for table <b>" . $table . "</b> needs to at least include a <b>puppy_name</b>.\n";
+	echo "Your <b>INSERT</b> 'columns' parameter for table <b>" . $table . "</b> needs to at least include a <b>puppy_name</b>.<br />\n";
 	echo "<i>( Example: <b>http://192.168.50.92/it350site/insert.php?user=my_user&secretkey=my_secretkey&table=puppy&columns=puppy_name&values='Alfred'</b> )</i>";
 	$validparams = FALSE;
 }
@@ -128,7 +129,7 @@ if (($table == 'puppy') && (!in_array("puppy_name", $columns_arr)) && $validpara
 // Check if minimum requirements for 'columns' is met for 'customer' table
 if (($table == 'customer') && (!in_array("customer_name", $columns_arr)) && $validparams == TRUE) {
 	echo "Oops! Parameter error:<br />\n";
-	echo "Your <b>INSERT</b> 'columns' parameter for table <b>" . $table . "</b> needs to at least include a <b>customer_name</b>.\n";
+	echo "Your <b>INSERT</b> 'columns' parameter for table <b>" . $table . "</b> needs to at least include a <b>customer_name</b>.<br />\n";
 	echo "<i>( Example: <b>http://192.168.50.92/it350site/insert.php?user=my_user&secretkey=my_secretkey&table=customer&columns=customer_name&values='Bob'</b> )</i>";
 	$validparams = FALSE;
 }
@@ -171,7 +172,7 @@ if (($table == 'customer') && (in_array("customer_age", $columns_arr)) && $valid
 }
 
 // Check if 'puppy_age' is positive INT
-if (($table == 'customer') && (in_array("puppy_age", $columns_arr)) && $validparams == TRUE) {
+if (($table == 'puppy') && (in_array("puppy_age", $columns_arr)) && $validparams == TRUE) {
 	$puppy_age_key = array_search("puppy_age", $columns_arr);
 	$value = substr($values_arr[$puppy_age_key],5,-5);
 	if(!is_numeric($value) || !($value > 0) || !($value == round($value, 0))) {
@@ -217,6 +218,7 @@ if ($validparams == TRUE){
 
 	$rows_affected = 0;
 	// Perform an SQL query
+	print $sql;
 	if ($stmt = $mysqli->prepare($sql)){
 		if ($clean_values != False) {
 			$types = "";

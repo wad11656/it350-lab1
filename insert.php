@@ -118,23 +118,18 @@ if (isset($_GET['values']) && $validparams == TRUE){
 }
 
 // Check if minimum requirements for 'columns' is met for 'puppy' table
-if (($table == 'puppy') && ((!in_array("puppy_name", $columns_arr)) && (!in_array("puppy_photo", $columns_arr))) && $validparams == TRUE) {
+if (($table == 'puppy') && (!in_array("puppy_name", $columns_arr)) && $validparams == TRUE) {
 	echo "Oops! Parameter error:<br />\n";
-	echo "Your <b>INSERT</b> 'columns' parameter for table <b>" . $table . "</b> needs to at least include either:<br />\n";
-	echo "(1) puppy_location,puppy_photo<br />\n";
-	echo "(2) puppy_name,puppy_location<br />\n";
-	echo "<i>( Example: <b>http://192.168.50.92/it350site/insert.php?user=my_user&secretkey=my_secretkey&table=puppy&columns=puppy_name,puppy_location&values=Alfred,Mesa</b> )</i>";
+	echo "Your <b>INSERT</b> 'columns' parameter for table <b>" . $table . "</b> needs to at least include a <b>puppy_name</b>.\n";
+	echo "<i>( Example: <b>http://192.168.50.92/it350site/insert.php?user=my_user&secretkey=my_secretkey&table=puppy&columns=puppy_name&values='Alfred'</b> )</i>";
 	$validparams = FALSE;
 }
 
 // Check if minimum requirements for 'columns' is met for 'customer' table
-if (($table == 'customer') && ((!in_array("customer_phone", $columns_arr)) && (!in_array("customer_email", $columns_arr)) && (!in_array("customer_address", $columns_arr))) && $validparams == TRUE) {
+if (($table == 'customer') && (!in_array("customer_name", $columns_arr)) && $validparams == TRUE) {
 	echo "Oops! Parameter error:<br />\n";
-	echo "Your <b>INSERT</b> 'columns' parameter for table <b>" . $table . "</b> needs to at least include either:<br />\n";
-	echo "(1) customer_name,customer_address<br />\n";
-	echo "(2) customer_name,customer_phone<br />\n";
-	echo "(3) customer_name,customer_email<br />\n";
-	echo "<i>( Example: <b>http://192.168.50.92/it350site/insert.php?user=my_user&secretkey=my_secretkey&table=customer&columns=customer_name,customer_email&values='Bob','bob@gmail.com'</b> )</i>";
+	echo "Your <b>INSERT</b> 'columns' parameter for table <b>" . $table . "</b> needs to at least include a <b>customer_name</b>.\n";
+	echo "<i>( Example: <b>http://192.168.50.92/it350site/insert.php?user=my_user&secretkey=my_secretkey&table=customer&columns=customer_name&values='Bob'</b> )</i>";
 	$validparams = FALSE;
 }
 

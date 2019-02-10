@@ -163,7 +163,7 @@ if (($table == 'customer') && (in_array("customer_age", $columns_arr)) && $valid
 	$value = substr($values_arr[$customer_age_key],5,-5);
 	if(!is_numeric($value) || !($value > 0) || !($value == round($value, 0))){
 		echo "Oops! Parameter error:<br />\n";
-		echo "Your age value for your 'customer_age' column (<b>" . $values_arr[$customer_age_key] . "</b>) is not a valid positive integer. Confirm your values are not surrounded by quotes (neither single quotes nor double quotes).<br />\n";
+		echo "Your age value for your 'customer_age' column (<b>" . $values_arr[$customer_age_key] . "</b>) is not a valid positive integer. Confirm your values are surrounded by single quotes.<br />\n";
 		echo "Confirm 'customer_age' does not contain any non-numeric characters.<br />\n";
 		echo "Confirm your 'columns' and 'values' parameters are listed in the same comma-delimited order as each other in your URL.<br />\n";
 		$validparams = FALSE;
@@ -176,24 +176,12 @@ if (($table == 'customer') && (in_array("puppy_age", $columns_arr)) && $validpar
 	$value = substr($values_arr[$puppy_age_key],5,-5);
 	if(!is_numeric($value) || !($value > 0) || !($value == round($value, 0))) {
 		echo "Oops! Parameter error:<br />\n";
-		echo "Your age value for your 'puppy_age' column (<b>" . $values_arr[$puppy_age_key] . "</b>) is not a valid positive integer. Confirm your values are not surrounded by quotes (neither single quotes nor double quotes).<br />\n";
+		echo "Your age value for your 'puppy_age' column (<b>" . $values_arr[$puppy_age_key] . "</b>) is not a valid positive integer. Confirm your values are surrounded by single quotes.<br />\n";
 		echo "Confirm 'puppy_age' does not contain any non-numeric characters.<br />\n";
 		echo "Confirm your 'columns' and 'values' parameters are listed in the same comma-delimited order as each other in your URL.<br />\n";
 		$validparams = FALSE;
 	}
 }
-
-/*
-// Check if puppy_age is int
-if (($table == 'puppy') && (in_array("puppy_age", $columns_arr)) && $validparams == TRUE) {
-	$puppy_age_key = array_search("puppy_age", $columns_arr);
-	if(!is_int($values_arr[$puppy_age_key])){
-		echo "Oops! Parameter error:<br />\n";
-		echo "Your age value for your 'puppy_age' column (<b>" . $values_arr[$puppy_age_key] . "</b>) is not an integer. Your values should not be surrounded by quotes (neither single quotes nor double quotes). Confirm your 'columns' and 'values' parameters are listed in the same comma-delimited order as each other in your URL.<br />\n";
-		$validparams = FALSE;
-	}
-}
-*/
 
 if ($validparams == TRUE){
 // Add columns and values to SQL statement

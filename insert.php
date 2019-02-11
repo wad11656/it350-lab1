@@ -27,6 +27,55 @@ if (isset($_GET['table'])){
 	$table = 'N/A';
 }
 
+function checkAlreadyInTable($mysqli, $table, $name_column_name, $columns_arr, $values_arr, $validparams){
+	$name_key = array_search($name_column_name, $columns_arr);
+	$sql = "SELECT * FROM " . $table . " WHERE " . $name_column_name . " = '" . substr($values_arr[$name_key],5,-5) . "'";
+	if ($stmt = $mysqli->query($sql)) {
+		if ($stmt->num_rows == 0){
+			// SUCCESS: name is not already in `puppy` table
+		}
+		else{
+			echo "Oops! Parameter error:<br />\n";
+			echo  $name_column_name . " <b>" . $values_arr[$name_key] . "</b> already exists in the '" . $table . "' table.";
+			$validparams = FALSE;
+		}
+	}
+	else{
+        // Oh no! The query failed. 
+		echo "Oops! Execution Error:<br />\n";
+		echo "The <b>SELECT</b> statement did not execute successfully when checking to see whether your '" . $name_column_name . "'' value already exists in the '" . $table . "'' table. Please check your syntax.<br />\n";
+		echo "<i>( Example: <b>http://40.117.58.200/it350site/insert.php?user=my_user&secretkey=my_secretkey&table=puppy&columns=puppy_name,puppy_age&values='Oink','5'</b> )</i>";
+		$validparams = FALSE;
+		exit;	
+	}
+	return $validparams;
+}
+
+// Phone # validity function (check if 7 or 10-digit number)
+function phoneValid($phone_column_name, $columns_arr, $values_arr, $validparams){
+	$phone_key = array_search($phone_column_name, $columns_arr);
+	if((!preg_match("/^[0-9]{3}-[0-9]{3}-[0-9]{4}$/", substr($values_arr[$phone_key],5,-5))) && (!preg_match("/^[0-9]{3}-[0-9]{4}$/", substr($values_arr[$phone_key],5,-5))) && (!preg_match("/^[0-9]{7}$/", substr($values_arr[$phone_key],5,-5))) && (!preg_match("/^[0-9]{10}$/", substr($values_arr[$phone_key],5,-5)))) {
+		echo "Oops! Parameter error:<br />\n";
+		echo "Your phone value for your '" . $phone_column_name . "' column (<b>" . $values_arr[$phone_key] . "</b>) is not a valid 7- or 10-digit American phone number. Confirm your 'columns' and 'values' parameters are listed in the same comma-delimited order as each other in your URL.<br />\n";
+		$validparams = FALSE;
+	}
+	return $validparams;
+}
+
+// Age validity function (check if positive INT)
+function ageValid($age_column_name, $columns_arr, $values_arr, $validparams){
+	$age_key = array_search($age_column_name, $columns_arr);
+	$value = substr($values_arr[$age_key],5,-5);
+	if(!is_numeric($value) || !($value > 0) || !($value == round($value, 0))){
+		echo "Oops! Parameter error:<br />\n";
+		echo "Your age value for your 'customer_age' column (<b>" . $values_arr[$age_key] . "</b>) is not a valid positive integer. Confirm your values are surrounded by single quotes.<br />\n";
+		echo "Confirm 'customer_age' does not contain any non-numeric characters.<br />\n";
+		echo "Confirm your 'columns' and 'values' parameters are listed in the same comma-delimited order as each other in your URL.<br />\n";
+		$validparams = FALSE;
+	}
+	return $validparams;
+}
+
 $validparams = TRUE;
 
 if ((!isset($_GET['user'])) || (!isset($_GET['secretkey'])) || (!isset($_GET['table']))){
@@ -126,12 +175,31 @@ if (($table == 'puppy') && (!in_array("puppy_name", $columns_arr)) && $validpara
 	$validparams = FALSE;
 }
 
+
 // Check if minimum requirements for 'columns' is met for 'customer' table
 if (($table == 'customer') && (!in_array("customer_name", $columns_arr)) && $validparams == TRUE) {
 	echo "Oops! Parameter error:<br />\n";
 	echo "Your <b>INSERT</b> 'columns' parameter for table <b>" . $table . "</b> needs to at least include a <b>customer_name</b>.<br />\n";
 	echo "<i>( Example: <b>http://40.117.58.200/it350site/insert.php?user=my_user&secretkey=my_secretkey&table=customer&columns=customer_name&values='Bob'</b> )</i>";
 	$validparams = FALSE;
+}
+
+// Check if minimum requirements for 'columns' is met for 'veterinarian' table
+if (($table == 'veterinarian') && (!in_array("vet_name", $columns_arr)) && (!in_array("vet_city", $columns_arr)) && $validparams == TRUE) {
+	echo "Oops! Parameter error:<br />\n";
+	echo "Your <b>INSERT</b> 'columns' parameter for table <b>" . $table . "</b> needs to at least include a <b>vet_name and vet_city</b>.<br />\n";
+	echo "<i>( Example: <b>http://40.117.58.200/it350site/insert.php?user=my_user&secretkey=my_secretkey&table=veterinarian&columns=vet_name,vet_city&values='Bob','Mesa'</b> )</i>";
+	$validparams = FALSE;
+}
+
+// Check if puppy_name already exists in table
+if ($table == 'puppy' && $validparams == TRUE){
+	$validparams = checkAlreadyInTable($mysqli, "puppy", "puppy_name", $columns_arr, $values_arr, $validparams);
+}
+
+// Check if vet_name already exists in table
+if ($table == 'veterinarian' && $validparams == TRUE){
+	$validparams = checkAlreadyInTable($mysqli, "veterinarian", "vet_name", $columns_arr, $values_arr, $validparams);
 }
 
 // Check if 'customer_email' is valid
@@ -148,40 +216,25 @@ if (($table == 'customer') && (in_array("customer_email", $columns_arr)) && $val
 }
 */
 
+
 // Check if 'customer_phone' is valid
 if (($table == 'customer') && (in_array("customer_phone", $columns_arr)) && $validparams == TRUE) {
-	$phone_key = array_search("customer_phone", $columns_arr);
-	if((!preg_match("/^[0-9]{3}-[0-9]{3}-[0-9]{4}$/", substr($values_arr[$phone_key],5,-5))) && (!preg_match("/^[0-9]{3}-[0-9]{4}$/", substr($values_arr[$phone_key],5,-5))) && (!preg_match("/^[0-9]{7}$/", substr($values_arr[$phone_key],5,-5))) && (!preg_match("/^[0-9]{10}$/", substr($values_arr[$phone_key],5,-5)))) {
-		echo "Oops! Parameter error:<br />\n";
-		echo "Your phone value for your 'customer_phone' column (<b>" . $values_arr[$phone_key] . "</b>) is not a valid 7- or 10-digit American phone number. Confirm your 'columns' and 'values' parameters are listed in the same comma-delimited order as each other in your URL.<br />\n";
-		$validparams = FALSE;
-	}
+	$validparams = phoneValid("customer_phone", $columns_arr, $values_arr, $validparams);
 }
 
-// Check if 'customer_age' is positive INT
+// Check if 'vet_phone' is valid
+if (($table == 'veterinarian') && (in_array("vet_phone", $columns_arr)) && $validparams == TRUE) {
+	$validparams = phoneValid("vet_phone", $columns_arr, $values_arr, $validparams);
+}
+
+// Check if 'customer_age' is valid
 if (($table == 'customer') && (in_array("customer_age", $columns_arr)) && $validparams == TRUE) {
-	$customer_age_key = array_search("customer_age", $columns_arr);
-	$value = substr($values_arr[$customer_age_key],5,-5);
-	if(!is_numeric($value) || !($value > 0) || !($value == round($value, 0))){
-		echo "Oops! Parameter error:<br />\n";
-		echo "Your age value for your 'customer_age' column (<b>" . $values_arr[$customer_age_key] . "</b>) is not a valid positive integer. Confirm your values are surrounded by single quotes.<br />\n";
-		echo "Confirm 'customer_age' does not contain any non-numeric characters.<br />\n";
-		echo "Confirm your 'columns' and 'values' parameters are listed in the same comma-delimited order as each other in your URL.<br />\n";
-		$validparams = FALSE;
-	}
+	$validparams = ageValid("customer_age", $columns_arr, $values_arr, $validparams);
 }
 
-// Check if 'puppy_age' is positive INT
+// Check if 'puppy_age' is valid
 if (($table == 'puppy') && (in_array("puppy_age", $columns_arr)) && $validparams == TRUE) {
-	$puppy_age_key = array_search("puppy_age", $columns_arr);
-	$value = substr($values_arr[$puppy_age_key],5,-5);
-	if(!is_numeric($value) || !($value > 0) || !($value == round($value, 0))) {
-		echo "Oops! Parameter error:<br />\n";
-		echo "Your age value for your 'puppy_age' column (<b>" . $values_arr[$puppy_age_key] . "</b>) is not a valid positive integer. Confirm your values are surrounded by single quotes.<br />\n";
-		echo "Confirm 'puppy_age' does not contain any non-numeric characters.<br />\n";
-		echo "Confirm your 'columns' and 'values' parameters are listed in the same comma-delimited order as each other in your URL.<br />\n";
-		$validparams = FALSE;
-	}
+	$validparams = ageValid("puppy_age", $columns_arr, $values_arr, $validparams);
 }
 
 if ($validparams == TRUE){
@@ -218,7 +271,6 @@ if ($validparams == TRUE){
 
 	$rows_affected = 0;
 	// Perform an SQL query
-	print $sql;
 	if ($stmt = $mysqli->prepare($sql)){
 		if ($clean_values != False) {
 			$types = "";

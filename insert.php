@@ -192,6 +192,14 @@ if (($table == 'veterinarian') && (!in_array("vet_name", $columns_arr)) && (!in_
 	$validparams = FALSE;
 }
 
+// Check if minimum requirements for 'columns' is met for 'customer' table
+if (($table == 'immunization') && (!in_array("immunization_name", $columns_arr)) && $validparams == TRUE) {
+	echo "Oops! Parameter error:<br />\n";
+	echo "Your <b>INSERT</b> 'columns' parameter for table <b>" . $table . "</b> needs to at least include a <b>immunization_name</b>.<br />\n";
+	echo "<i>( Example: <b>http://40.117.58.200/it350site/insert.php?user=my_user&secretkey=my_secretkey&table=immunization&columns=customer_name&values='Measles'</b> )</i>";
+	$validparams = FALSE;
+}
+
 // Check if puppy_name already exists in table
 if ($table == 'puppy' && $validparams == TRUE){
 	$validparams = checkAlreadyInTable($mysqli, "puppy", "puppy_name", $columns_arr, $values_arr, $validparams);

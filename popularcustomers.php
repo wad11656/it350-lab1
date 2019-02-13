@@ -19,7 +19,7 @@ $validparams = TRUE;
 if ((!isset($_GET['user'])) || (!isset($_GET['secretkey']))){
 	echo "Oops! Parameter error:<br />\n";
 	echo "This Puppies Unlimited&trade; URL query require a 'user' and 'secretkey' parameter. Check you have these two in your URL.<br />\n";
-	echo "( Example: <b>http://40.117.58.200/it350site/noimmus.php?user=my_user&secretkey=my_secretkey</b> )";
+	echo "( Example: <b>http://40.117.58.200/it350site/popularcustomers.php?user=my_user&secretkey=my_secretkey</b> )";
 	$validparams = FALSE;
 	exit;
 }
@@ -58,10 +58,10 @@ if ($mysqli->connect_errno) {
 
 // Perform an SQL query
 if ($validparams == TRUE){
-	$sql = 'SELECT A.puppy_id, A.puppy_name FROM puppy A LEFT JOIN puppy_immunization B ON A.puppy_id = B.puppy_id WHERE B.puppy_id IS NULL';
+	$sql = 'SELECT customer_name, COUNT(*) AS numpups FROM customer LEFT JOIN adoption ON customer.customer_id = adoption.customer_id GROUP BY customer.customer_id HAVING COUNT(*) > 4 ';
 	// Set rows_affected
 	$rows_affected = 0;
-	// Print result of SQL query as JSON
+	// Execute 1st SQL Statment ($sql)
 	if ($stmt = $mysqli->prepare($sql)){
 		$stmt->execute();
 		$rows_affected = $stmt->affected_rows;
@@ -69,12 +69,14 @@ if ($validparams == TRUE){
 	else{
    			// Oh no! The query failed. 
 	echo "Oops! Execution Error:<br />\n";
-		echo "The <b>SELECT</b> statement did not execute successfully. Please check your syntax.<br />\n";
-		echo "<i>( Example: <b>http://40.117.58.200/it350site/noimmus.php?user=my_user&secretkey=my_secretkey</b> )</i>";
+		echo "The <b>CREATE VIEW</b> statement did not execute successfully. Please check your syntax.<br />\n";
+			echo "Errno: " . $mysqli->errno . "<br />\n";
+	echo "Error: " . $mysqli->error . "<br />\n";
+		echo "<i>( Example: <b>http://40.117.58.200/it350site/popularcustomers.php?user=my_user&secretkey=my_secretkey</b> )</i>";
 		$validparams = FALSE;
 		exit;
 	}
-
+	// Print result of SQL query as JSON
 	if ($validparams == TRUE){
 		// Print result of SQL query as JSON
 		$result = $stmt->get_result();

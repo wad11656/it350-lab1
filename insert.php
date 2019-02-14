@@ -3,12 +3,6 @@ error_reporting(E_ALL);
 ini_set('display_errors', '1');
 
 // Set $_GET variables
-if (isset($_GET['aid']) && is_numeric($_GET['aid'])) {
-	$aid = (int) $_GET['aid'];
-} else {
-	$aid = 1;
-}
-
 if (isset($_GET['user'])){
 	$user = filter_var($_GET['user'], FILTER_SANITIZE_STRING);
 } else {

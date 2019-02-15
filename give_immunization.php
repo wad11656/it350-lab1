@@ -122,10 +122,7 @@ if ($validparams == TRUE){
 
 // Perform an SQL query
 if ($validparams == TRUE){
-	echo $puppy;
-	echo $veterinarian;
-	echo $immunization;
-	$sql = "INSERT INTO puppy_immunization (puppy_id, immu_id, vet_id) VALUES ((SELECT puppy_id FROM puppy WHERE puppy_name = '$puppy'),(SELECT immu_id FROM immunization WHERE immunization_name = '$immunization'),(SELECT vet_id FROM veterinarian WHERE veterinarian_name = '$veterinarian'))";
+	$sql = "INSERT INTO puppy_immunization (puppy_id, immunization_id, vet_id) VALUES ((SELECT id FROM puppy WHERE puppy_name = '$puppy'),(SELECT id FROM immunization WHERE immunization_name = '$immunization'),(SELECT id FROM veterinarian WHERE veterinarian_name = '$veterinarian'))";
 	// Set rows_affected
 	$rows_affected = 0;
 	// Execute 1st SQL Statment ($sql)

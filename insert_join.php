@@ -94,8 +94,8 @@ if ((!$mysqli->query($checktable)) && $validparams == TRUE){
 if ($validparams == TRUE){
 
 	$revised_values = str_replace("%20"," ",$values);
-	$revised_values = preg_replace("!&#39;%?[a-zA-Z0-9 ]+%?&#39;!","*",$revised_values);
-	$values_array = preg_match_all("!&#39;(%?[a-zA-Z0-9 ]+%?)&#39;!",$values,$value_matches,PREG_PATTERN_ORDER);
+	$revised_values = preg_replace("!&#39;%?[a-zA-Z0-9\-\@\. ]+%?&#39;!","*",$revised_values);
+	$values_array = preg_match_all("!&#39;(%?[a-zA-Z0-9\-\@\. ]+%?)&#39;!",$values,$value_matches,PREG_PATTERN_ORDER);
 
 	// The following assumes the fktable order is the same as the fkcolumns order
 	$subqueries = array();
@@ -105,7 +105,7 @@ if ($validparams == TRUE){
 		$fktable = $fktables_array[$i];
 		$fkcolumn = $fkcolumns_array[$i];
 
-		$subquery = "(SELECT $fktable" . "_id FROM $fktable WHERE $fkcolumn = ?)";
+		$subquery = "(SELECT id FROM $fktable WHERE $fkcolumn = ?)";
 		$subqueries[] = $subquery;
 	}
 
@@ -122,7 +122,7 @@ if ($validparams == TRUE){
 	if ($stmt = $mysqli->prepare($query_sql)) {
 		$types = "";
 		foreach ($value_matches[1] as $v) {
-			if (preg_match("![0-9\.]+!",$v)) {
+			if (preg_match("!^[0-9\.]+$!",$v)) {
 				$types .= "d";
 			} else {
 				$types .= "s";

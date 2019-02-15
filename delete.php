@@ -25,7 +25,7 @@ $validparams = TRUE;
 if ((!isset($_GET['user'])) || (!isset($_GET['secretkey'])) || (!isset($_GET['table']))){
 	echo "Oops! Parameter error:<br />\n";
 	echo "All Puppies Unlimited&trade; URL queries require a 'user', 'secretkey' and 'table' parameter. Check you have at least these three in your URL.<br />\n";
-	echo "( Example: <b>http://40.117.58.200/it350site/delete.php?user=my_user&secretkey=my_secretkey&table=puppy&puppy_id='6'</b> )";
+	echo "( Example: <b>http://40.117.58.200/it350site/delete.php?user=my_user&secretkey=my_secretkey&table=puppy&id='6'</b> )";
 	$validparams = FALSE;
 	exit;
 }
@@ -74,7 +74,7 @@ if ((!$mysqli->query($checktable)) && $validparams == TRUE){
 if (!isset($_GET['conditions'])){
 	echo "Oops! Parameter error:<br />\n";
 	echo "All Puppies Unlimited&trade; <b>DELETE</b> queries require a 'conditions' parameter.<br />\n";
-	echo "<i>( Example: <b>http://40.117.58.200/it350site/delete.php?user=my_user&secretkey=my_secretkey&table=puppy&puppy_id='6'</b> )</i>";
+	echo "<i>( Example: <b>http://40.117.58.200/it350site/delete.php?user=my_user&secretkey=my_secretkey&table=puppy&id='6'</b> )</i>";
 	$validparams = FALSE;
 }
 
@@ -82,14 +82,15 @@ if (!isset($_GET['conditions'])){
 if ($validparams == TRUE){
 	$sql = 'DELETE FROM ' . $table;
 	if (isset($_GET['conditions'])){
+
 		$clean_conditions = filter_var($_GET['conditions'], FILTER_SANITIZE_STRING);
 		$revised_conditions = str_replace("%20"," ",$clean_conditions);
-		$revised_conditions = preg_replace("!&#39;%?[a-zA-Z0-9]+%?&#39;!","?",$revised_conditions);
-		$conditions_array = preg_match_all("!&#39;(%?[a-zA-Z0-9]+%?)&#39;!", $clean_conditions, $condition_matches, PREG_PATTERN_ORDER);
+		$revised_conditions = preg_replace("!&#39;%?[a-zA-Z0-9\-\@\. ]+%?&#39;!","?",$revised_conditions);
+		$conditions_array = preg_match_all("!&#39;(%?[a-zA-Z0-9\-\@\. ]+%?)&#39;!", $clean_conditions, $condition_matches, PREG_PATTERN_ORDER);
 
 		$sql .= ' WHERE ' . $revised_conditions;
 	}
-
+echo $sql;
 	// Set rows_affected
 	$rows_affected = 0;
 	// Print result of SQL query as JSON
@@ -97,7 +98,7 @@ if ($validparams == TRUE){
 		if ($clean_conditions != False) {
 			$types = "";
 			foreach ($condition_matches[1] as $c) {
-				if (preg_match("![0-9\.]+!",$c)) {
+				if (preg_match("!^[0-9\.]+$!",$c)) {
 					$types .= "d";
 				} else {
 					$types .= "s";
@@ -107,13 +108,21 @@ if ($validparams == TRUE){
 		}
 		$stmt->execute();
 		$rows_affected = $stmt->affected_rows;
+		if ($rows_affected < 0){
+								echo "Errno: " . $mysqli->errno . "<br />\n";
+		echo "Error: " . $mysqli->error . "<br />\n";
+
+		}
 	}
 	else{
    			// Oh no! The query failed. 
 		echo "Oops! Execution Error:<br />\n";
 		echo "The <b>DELETE</b> did not execute successfully. User <b>" . $user . "</b> may not have authority to <b>DELETE</b>. Requires elevated credentials.<br />\n";
 		echo "If you are sure your credentials have <b>DELETE</b> privileges, double-check your syntax (Use <b>single quotes</b> around your non-column 'conditions' values).<br />\n";
-		echo "<i>( Example: <b>http://40.117.58.200/it350site/insert.php?user=my_user&secretkey=my_secretkey&table=puppy&puppy_id='6'</b> )</i>";
+							echo "Errno: " . $mysqli->errno . "<br />\n";
+		echo "Error: " . $mysqli->error . "<br />\n";
+
+		echo "<i>( Example: <b>http://40.117.58.200/it350site/insert.php?user=my_user&secretkey=my_secretkey&table=puppy&id='6'</b> )</i>";
 		$validparams = FALSE;
 		exit;
 	}

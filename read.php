@@ -57,12 +57,15 @@ if ($mysqli->connect_errno) {
 }
 
 // Check if Table exists in Database
-$checktable = "DESCRIBE $table";
-if ((!$mysqli->query($checktable)) && $validparams == TRUE){
-	echo "Oops! Parameter error:<br />\n";
-	echo "The table you specified for your 'table' parameter is not in the Puppies Unlimited&trade; database. Check your spelling and try again.";
-	$validparams = FALSE;
-	exit;
+$table_arr = explode(",",$table);
+for ($l = 0; $l < count($table_arr); $l++){
+	$checktable = "DESCRIBE $table_arr[$l]";
+	if ((!$mysqli->query($checktable)) && $validparams == TRUE){
+		echo "Oops! Parameter error:<br />\n";
+		echo "The table you specified for your 'table' parameter is not in the Puppies Unlimited&trade; database. Check your spelling and try again.";
+		$validparams = FALSE;
+		exit;
+	}
 }
 
 // Check if 'order' Column exists in Table
@@ -137,11 +140,12 @@ if ($validparams == TRUE){
 
 	// Clean and append conditions
 	if (isset($_GET['conditions'])){
+
 		$clean_conditions = filter_var($_GET['conditions'], FILTER_SANITIZE_STRING);
 		$revised_conditions = str_replace("%20"," ",$clean_conditions);
-		$revised_conditions = preg_replace("!&#39;%?[a-zA-Z0-9]+%?&#39;!","?",$revised_conditions);
-		$conditions_array = preg_match_all("!&#39;(%?[a-zA-Z0-9]+%?)&#39;!", $clean_conditions, $condition_matches, PREG_PATTERN_ORDER);
-		
+		$revised_conditions = preg_replace("!&#39;%?[a-zA-Z0-9\-\@\. ]+%?&#39;!","?",$revised_conditions);
+		$conditions_array = preg_match_all("!&#39;(%?[a-zA-Z0-9\-\@\. ]+%?)&#39;!", $clean_conditions, $condition_matches, PREG_PATTERN_ORDER);
+
 		// Append `WHERE [conditions]`
 		$sql .= ' WHERE ' . $revised_conditions;
 	}
@@ -162,7 +166,7 @@ if ($validparams == TRUE){
 			if ($clean_conditions != False) {
 				$types = "";
 				foreach ($condition_matches[1] as $c) {
-					if (preg_match("![0-9\.]+!",$c)) {
+					if (preg_match("!^[0-9\.]+$!",$c)) {
 						$types .= "d";
 					} else {
 						$types .= "s";
@@ -176,6 +180,9 @@ if ($validparams == TRUE){
    			// Oh no! The query failed. 
 			echo "Oops! Execution Error:<br />\n";
 			echo "The <b>READ</b> did not execute successfully. Please check your syntax.<br />\n";
+			echo "Errno: " . $mysqli->errno . "<br />\n";
+			echo "Error: " . $mysqli->error . "<br />\n";
+
 			echo "<i>( Example: <b>http://40.117.58.200/it350site/read.php?user=my_user&secretkey=my_secretkey&table=puppy</b> )</i>";
 			$validparams = FALSE;
 			exit;
@@ -210,6 +217,9 @@ if ($validparams == TRUE){
    			// Oh no! The query failed. 
 			echo "Oops! Execution Error:<br />\n";
 			echo "The <b>READ</b> did not execute successfully. Please check your syntax.<br />\n";
+			echo "Errno: " . $mysqli->errno . "<br />\n";
+			echo "Error: " . $mysqli->error . "<br />\n";
+
 			echo "<i>( Example: <b>http://40.117.58.200/it350site/read.php?user=my_user&secretkey=my_secretkey&table=puppy</b> )</i>";
 			exit;
 		}

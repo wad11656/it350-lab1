@@ -58,7 +58,7 @@ if ($mysqli->connect_errno) {
 
 // Perform an SQL query
 if ($validparams == TRUE){
-	$sql = 'SELECT customer_name, COUNT(adoption_id) AS numpups FROM customer LEFT JOIN adoption ON customer.customer_id = adoption.customer_id GROUP BY customer.customer_id';
+	$sql = 'SELECT customer_name, COUNT(adoption_id) AS numpups FROM customer LEFT JOIN adoption ON customer.id = adoption.customer_id GROUP BY customer.id';
 	// Set rows_affected
 	$rows_affected = 0;
 	// Execute 1st SQL Statment ($sql)

@@ -58,7 +58,7 @@ if ($mysqli->connect_errno) {
 
 // Perform an SQL query
 if ($validparams == TRUE){
-	$sql = 'SELECT A.puppy_id, A.puppy_name FROM puppy A LEFT JOIN puppy_immunization B ON A.puppy_id = B.puppy_id WHERE B.puppy_id IS NULL';
+	$sql = 'SELECT A.id, A.puppy_name FROM puppy A LEFT JOIN puppy_immunization B ON A.id = B.puppy_id WHERE B.puppy_id IS NULL';
 	// Set rows_affected
 	$rows_affected = 0;
 	// Print result of SQL query as JSON

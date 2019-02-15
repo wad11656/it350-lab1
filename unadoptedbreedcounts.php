@@ -58,7 +58,7 @@ if ($mysqli->connect_errno) {
 
 // Perform an SQL query
 if ($validparams == TRUE){
-	$sql = 'SELECT b.breed_name, COUNT(*) AS numpup FROM puppy_breed pb INNER JOIN breed b ON (pb.breed_id = b.breed_id) WHERE puppy_id NOT IN (SELECT puppy_id FROM adoption) GROUP BY pb.breed_id';
+	$sql = 'SELECT b.breed_name, COUNT(*) AS numpups FROM puppy_breed pb INNER JOIN breed b ON (pb.breed_id = b.id) WHERE puppy_id NOT IN (SELECT puppy_id FROM adoption) GROUP BY pb.breed_id';
 	// Set rows_affected
 	$rows_affected = 0;
 	// Execute 1st SQL Statment ($sql)

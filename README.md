@@ -88,7 +88,7 @@ API: http://40.117.58.200/it350site/
 
 <del>## (Intentional) Quirks:</del>
 
-**UPDATE:** Functionality adheres to that found in the test driver.
+**UPDATE (2/15/19):** Functionality adheres to that found in the test driver.
 
 ### ALL:
 

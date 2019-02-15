@@ -1,6 +1,6 @@
-# Lab Extension 1
+# Lab: Extension 1
 
-IT350 Lab 1 by Wade Murdock.
+IT350 Lab: Extension 1 by Wade Murdock.
 
 GitHub: https://github.com/wad11656/it350-lab1
 

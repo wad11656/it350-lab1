@@ -1,3 +1,13 @@
+# Lab Extension 1
+
+IT350 Lab 1 by Wade Murdock.
+
+GitHub: https://github.com/wad11656/it350-lab1
+
+API: http://40.117.58.200/it350site/
+
+
+
 # Lab 1
 
 IT350 Lab 1 by Wade Murdock.
@@ -16,20 +26,20 @@ API: http://40.117.58.200/it350site/
 
    Table: **customer**
 
-     -----------------------------------------------------------------------------------------
-    |customer_id(pk)|customer_name|customer_age|customer_address|customer_phone|customer_email|
-     -----------------------------------------------------------------------------------------
+     --------------------------------------------
+    |id(pk)|customer_name|age|address|phone|email|
+     --------------------------------------------
 
    Table: **puppy**
 
-     -------------------------------------------------------------------------------------------------------------------
-    |puppy_id(pk)|puppy_name|puppy_age|puppy_breed|puppy_location|puppy_immunizationrecords|puppy_photo|puppy_timeposted|
-     -------------------------------------------------------------------------------------------------------------------
+     ------------------------------------------------------
+    |id(pk)|puppy_name|age|location|photos|date_time_posted|
+     ------------------------------------------------------
 
-   Table: **purchase**
+   Table: **adoption**
 
      ----------------------------------------------------------
-    |purchase_id(pk)|customer_id(fk)|puppy_id(fk)|purchase_time|
+    |adoption_id(pk)|customer_id(fk)|puppy_id(fk)|purchase_time|
      ----------------------------------------------------------
 
 ## Functionality:
@@ -40,23 +50,25 @@ API: http://40.117.58.200/it350site/
 
 ### INSERT.PHP Example Query:
 
-`http://40.117.58.200/it350site/insert.php?user=employee&secretkey=123654&table=customer&columns=customer_name,customer_age,customer_address,customer_phone,customer_email&values=%27George%27,%2735%27,%271234%27,%271234567%27,%271234%27`
+`http://40.117.58.200/it350site/insert.php?user=employee&secretkey=123654&table=customer&columns=customer_name,age,address,phone,email&values=%27George%27,%2735%27,%271234%27,%271234567%27,%27George@gmail.com%27`
 
 ### UPDATE.PHP Example Query:
 
-`http://40.117.58.200/it350site/update.php?user=employee&secretkey=123654&table=customer&set=customer_name=%27Phil%27&conditions=customer_id=%273%27`
+`http://40.117.58.200/it350site/update.php?user=employee&secretkey=123654&table=customer&set=customer_name=%27Phil%27&conditions=id=%273%27`
 
 ### DELETE.PHP Example Query:
 
-`http://40.117.58.200/it350site/delete.php?user=employeeadmin&secretkey=321456&table=customer&conditions=customer_id=%272%27`
+`http://40.117.58.200/it350site/delete.php?user=employeeadmin&secretkey=321456&table=customer&conditions=id=%272%27`
 
 ## (Intentional) Quirks:
 
 ### ALL:
 
-* Valid emails (i.e. `bob@gmail.com`), file names with extensions (i.e. `photo.jpg`), and phone numbers with hyphens (i.e. `555-4321`) are not accepted as URL parameters due to `jgiboney`'s binding parameter code's limitations. The biggest resulting limitation from this is that you therefore cannot `INSERT`/`UPDATE` a valid email into the `customer_email` column.
+<del>* Valid emails (i.e. `bob@gmail.com`), file names with extensions (i.e. `photo.jpg`), and phone numbers with hyphens (i.e. `555-4321`) are not accepted as URL parameters due to `jgiboney`'s binding parameter code's limitations. The biggest resulting limitation from this is that you therefore cannot `INSERT`/`UPDATE` a valid email into the `customer_email` column.
 
-    `jgiboney` admits this is an error on his part, did not expect us to fully understand--nor, therefore, be able to modify--the binding parameter code he provided, and rather expected us to just copy and paste it where appropriate, so points are not to be taken off for our API not being able to accept valid emails (i.e. `bob@gmail.com`) or phone numbers with hyphens (i.e. `555-4321`).
+    `jgiboney` admits this is an error on his part, did not expect us to fully understand--nor, therefore, be able to modify--the binding parameter code he provided, and rather expected us to just copy and paste it where appropriate, so points are not to be taken off for our API not being able to accept valid emails (i.e. `bob@gmail.com`) or phone numbers with hyphens (i.e. `555-4321`).</del>
+
+**UPDATE (2/15/19):** Emails and phone numbers with hyphens are now accepted and are checked for proper formatting.
 
 ### READ.PHP:
 

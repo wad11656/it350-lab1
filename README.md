@@ -6,16 +6,6 @@ GitHub: https://github.com/wad11656/it350-lab1
 
 API: http://40.117.58.200/it350site/
 
-
-
-# Lab 1
-
-IT350 Lab 1 by Wade Murdock.
-
-GitHub: https://github.com/wad11656/it350-lab1
-
-API: http://40.117.58.200/it350site/
-
 ## Database Structure:
 
 ### Database: **puppies_unlimited**
@@ -24,11 +14,35 @@ API: http://40.117.58.200/it350site/
 
 `(fk)` = foreign key
 
+   Table: **adoption**
+
+      ----------------------------------------------------------
+     |adoption_id(pk)|customer_id(fk)|puppy_id(fk)|purchase_time|
+      ----------------------------------------------------------
+
+   Table: **breed**
+
+      -----------------
+     |id(pk)|breed_name|
+      -----------------
+
    Table: **customer**
 
      --------------------------------------------
     |id(pk)|customer_name|age|address|phone|email|
      --------------------------------------------
+
+   Table: **immunization**
+
+      -------------------------------------------------
+     |id(pk)|immunization_name|immunization_description|
+      -------------------------------------------------
+
+   Table: **parent**
+
+      ---------------------------------------------------------------------------
+     |relationship_id(pk)|puppy_parent_id(fk)|puppy_child_id(fk)|mother_or_father|
+      ---------------------------------------------------------------------------
 
    Table: **puppy**
 
@@ -36,31 +50,45 @@ API: http://40.117.58.200/it350site/
     |id(pk)|puppy_name|age|location|photos|date_time_posted|
      ------------------------------------------------------
 
-   Table: **adoption**
+   Table: **puppy_breed**
 
-     ----------------------------------------------------------
-    |adoption_id(pk)|customer_id(fk)|puppy_id(fk)|purchase_time|
-     ----------------------------------------------------------
+     --------------------------------------------
+    |puppy_breed_id(pk)|puppy_id(fk)|breed_id(fk)|
+     --------------------------------------------
+
+   Table: **puppy_immunization**
+
+      -----------------------------------------------------------------------------
+     |immu_given_id(pk)|puppy_id(fk)|vet_id(fk)|immunization_id(fk)|immu_given_time|
+      ------------------------------------------------------------------------------
+
+   Table: **veterinarian**
+
+      -------------------------------------
+     |id(pk)|veterinarian_name|address|city|
+      -------------------------------------
 
 ## Functionality:
 
-### READ.PHP Example Query:
+<del>### READ.PHP Example Query:</del>
 
-`http://40.117.58.200/it350site/read.php?user=employee&secretkey=123654&table=puppy&order=puppy_age&limit=5&conditions=puppy_name%20LIKE%20%27Alfred%27`
+<del>`http://40.117.58.200/it350site/read.php?user=employee&secretkey=123654&table=puppy&order=puppy_age&limit=5&conditions=puppy_name%20LIKE%20%27Alfred%27`</del>
 
-### INSERT.PHP Example Query:
+<del>### INSERT.PHP Example Query:</del>
 
-`http://40.117.58.200/it350site/insert.php?user=employee&secretkey=123654&table=customer&columns=customer_name,age,address,phone,email&values=%27George%27,%2735%27,%271234%27,%271234567%27,%27George@gmail.com%27`
+<del>`http://40.117.58.200/it350site/insert.php?user=employee&secretkey=123654&table=customer&columns=customer_name,age,address,phone,email&values=%27George%27,%2735%27,%271234%27,%271234567%27,%27George@gmail.com%27`</del>
 
-### UPDATE.PHP Example Query:
+<del>### UPDATE.PHP Example Query:</del>
 
-`http://40.117.58.200/it350site/update.php?user=employee&secretkey=123654&table=customer&set=customer_name=%27Phil%27&conditions=id=%273%27`
+<del>`http://40.117.58.200/it350site/update.php?user=employee&secretkey=123654&table=customer&set=customer_name=%27Phil%27&conditions=id=%273%27`</del>
 
-### DELETE.PHP Example Query:
+<del>### DELETE.PHP Example Query:</del>
 
-`http://40.117.58.200/it350site/delete.php?user=employeeadmin&secretkey=321456&table=customer&conditions=id=%272%27`
+<del>`http://40.117.58.200/it350site/delete.php?user=employeeadmin&secretkey=321456&table=customer&conditions=id=%272%27`</del>
 
-## (Intentional) Quirks:
+<del>## (Intentional) Quirks:</del>
+
+**UPDATE:** Functionality adheres to that found in the test driver.
 
 ### ALL:
 

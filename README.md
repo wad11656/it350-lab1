@@ -114,10 +114,6 @@ API: http://40.117.58.200/it350site/
 
 ### INSERT.PHP:
 
-* `INSERT` queries for the table `puppy` need at least a `puppy_name`.
+* Only **7- or 10- digit** `phone` numbers are accepted (i.e. `555-4321`).
 
-* `INSERT` queries for the table `customer` need at least a `customer_name`.
-
-* Only **7- or 10- digit** `customer_phone` numbers are accepted in the `customer` table (i.e. `5554321`).
-
-* Only **positive integer** `customer_age` and `puppy_age` values are accepted in the `customer` and `puppy` tables, respectively (i.e. `35`).
+* Only **positive integer** `age` values are accepted (i.e. `35`).

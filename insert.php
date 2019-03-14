@@ -1,5 +1,6 @@
 <?php
-error_reporting(0);
+error_reporting(E_ALL);
+ini_set('display_errors', '1');
 
 // Set $_GET variables
 if (isset($_GET['user'])){

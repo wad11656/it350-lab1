@@ -14,18 +14,18 @@ if (isset($_GET['secretkey'])){
 	$secretkey = 'N/A';
 }
 
-if (isset($_GET['table'])){
-	$table = filter_var($_GET['table'], FILTER_SANITIZE_STRING);
+if (isset($_GET['immunization'])){
+	$immunization = filter_var($_GET['immunization'], FILTER_SANITIZE_STRING);
 } else {
-	$table = 'N/A';
+	$immunization = 'N/A';
 }
 
 $validparams = TRUE;
 
-if ((!isset($_GET['user'])) || (!isset($_GET['secretkey'])) || (!isset($_GET['table']))){
+if ((!isset($_GET['user'])) || (!isset($_GET['secretkey'])) || (!isset($_GET['immunization']))){
 	echo "Oops! Parameter error:<br />\n";
-	echo "All Puppies Unlimited&trade; URL queries require a 'user', 'secretkey' and 'table' parameter. Check you have at least these three in your URL.<br />\n";
-	echo "( Example: <b>http://40.117.58.200/it350site/delete.php?user=my_user&secretkey=my_secretkey&table=puppy&id='6'</b> )";
+	echo "<b>delete_immunization.php</b> requires a 'user', 'secretkey', and 'immunization' parameter. Check you have all of these in your URL.<br />\n";
+	echo "( Example: <b>http://40.117.58.200/it350site/delete_immunization.php?user=my_user&secretkey=my_secretkey&immunization=Measles</b> )";
 	$validparams = FALSE;
 	exit;
 }
@@ -62,67 +62,68 @@ if ($mysqli->connect_errno) {
 	exit;
 }
 
-// Check if Table exists in Database
-$checktable = "DESCRIBE $table";
-if ((!$mysqli->query($checktable)) && $validparams == TRUE){
-	echo "Oops! Parameter error:<br />\n";
-	echo "The table you specified for your 'table' parameter is not in the Puppies Unlimited&trade; database. Check your spelling and try again.";
-	$validparams = FALSE;
-	exit;
+// Check if one of the parameters has more than 1 value
+if ($validparams == TRUE){
+	for ($k = 0; $k < count($params_arr); $k++){
+		$param =  filter_var($immunization, FILTER_SANITIZE_STRING);
+		$param_arr = explode(",",$param);
+		if (count($param_arr) > 1){
+			echo "Oops! Parameter error:<br />\n";
+			echo "You specified more than one value for your <b>'immunization'</b> parameter. <b>delete_immunization.php</b> accepts only 1 value for this parameter.<br />\n";
+			echo "<i>( Example: <b>http://40.117.58.200/it350site/delete_immunization.php?user=my_user&secretkey=my_secretkey&immunization=Measles</b> )</i><br />\n";
+			$validparams = FALSE;
+		}
+		// If all parameters only have 1 value each, check if each value exists in its respective table.
+		else{
+			$error_columns = "";
+			for ($i = 0; $i < count($param_arr); $i++){
+				if ($stmt = $mysqli->query("SELECT * FROM immunization WHERE immunization_name = '$immunization'")) {
+					if ($stmt->num_rows == 1){
+					// Valid parameter value
+					}
+					else{
+						$error_columns .= $param_arr[$i] . " ";
+						$validparams = FALSE;
+					}
+				}
+				else{
+					echo "Oops! Execution Error:<br />\n";
+					echo "The <b>SELECT</b> statement did not execute successfully. Please check your syntax.<br />\n";
+					echo "Errno: " . $mysqli->errno . "<br />\n";
+					echo "Error: " . $mysqli->error . "<br />\n";
+					echo "<i>( Example: <b>http://40.117.58.200/it350site/delete_immunization.php?user=my_user&secretkey=my_secretkey&immunization=Measles</b> )</i>";
+					$validparams = FALSE;
+					exit;
+				}
+			}
+			if ($error_columns !== ""){
+				echo "Oops! Parameter error:<br />\n";
+				echo "The value <b>" . $error_columns . "</b>";
+				echo " that you specified for your <b>'immunization'</b> parameter is not in the <b>immunization</b> table. Check your spelling and try again.<br />\n";
+				$validparams = FALSE;
+			}
+		}
+	}
 }
 
-if (!isset($_GET['conditions'])){
-	echo "Oops! Parameter error:<br />\n";
-	echo "All Puppies Unlimited&trade; <b>DELETE</b> queries require a 'conditions' parameter.<br />\n";
-	echo "<i>( Example: <b>http://40.117.58.200/it350site/delete.php?user=my_user&secretkey=my_secretkey&table=puppy&id='6'</b> )</i>";
-	$validparams = FALSE;
-}
 
 // Perform an SQL query
 if ($validparams == TRUE){
-	$sql = 'DELETE FROM ' . $table;
-	if (isset($_GET['conditions'])){
+	$sql = "DELETE FROM immunization WHERE immunization_name = '$immunization'";
 
-		$clean_conditions = filter_var($_GET['conditions'], FILTER_SANITIZE_STRING);
-		$revised_conditions = str_replace("%20"," ",$clean_conditions);
-		$revised_conditions = preg_replace("!&#39;%?[a-zA-Z0-9\-\@\. ]+%?&#39;!","?",$revised_conditions);
-		$conditions_array = preg_match_all("!&#39;(%?[a-zA-Z0-9\-\@\. ]+%?)&#39;!", $clean_conditions, $condition_matches, PREG_PATTERN_ORDER);
-
-		$sql .= ' WHERE ' . $revised_conditions;
-	}
-echo $sql;
 	// Set rows_affected
 	$rows_affected = 0;
 	// Print result of SQL query as JSON
 	if ($stmt = $mysqli->prepare($sql)){
-		if ($clean_conditions != False) {
-			$types = "";
-			foreach ($condition_matches[1] as $c) {
-				if (preg_match("!^[0-9\.]+$!",$c)) {
-					$types .= "d";
-				} else {
-					$types .= "s";
-				}
-			}
-			$stmt->bind_param($types, ...$condition_matches[1]);
-		}
 		$stmt->execute();
 		$rows_affected = $stmt->affected_rows;
-		if ($rows_affected < 0){
-								echo "Errno: " . $mysqli->errno . "<br />\n";
-		echo "Error: " . $mysqli->error . "<br />\n";
-
-		}
 	}
 	else{
    			// Oh no! The query failed. 
 		echo "Oops! Execution Error:<br />\n";
 		echo "The <b>DELETE</b> did not execute successfully. User <b>" . $user . "</b> may not have authority to <b>DELETE</b>. Requires elevated credentials.<br />\n";
-		echo "If you are sure your credentials have <b>DELETE</b> privileges, double-check your syntax (Use <b>single quotes</b> around your non-column 'conditions' values).<br />\n";
-							echo "Errno: " . $mysqli->errno . "<br />\n";
-		echo "Error: " . $mysqli->error . "<br />\n";
-
-		echo "<i>( Example: <b>http://40.117.58.200/it350site/insert.php?user=my_user&secretkey=my_secretkey&table=puppy&id='6'</b> )</i>";
+		echo "If you are sure your credentials have <b>DELETE</b> privileges, double-check your syntax. Don't use any quotes.<br />\n";
+		echo "<i>( Example: <b>http://40.117.58.200/it350site/delete_immunization.php?user=my_user&secretkey=my_secretkey&immunization=Measles</b> )</i>";
 		$validparams = FALSE;
 		exit;
 	}

@@ -26,7 +26,7 @@ $validparams = TRUE;
 if ((!isset($_GET['user'])) || (!isset($_GET['secretkey'])) || (!isset($_GET['table']))){
 	echo "Oops! Parameter error:<br />\n";
 	echo "All Puppies Unlimited&trade; URL queries require a 'user', 'secretkey' and 'table' parameter. Check you have at least these three in your URL.<br />\n";
-	echo "<i>( Example: <b>http://192.168.50.92/it350site/read.php?user=my_user&secretkey=my_secretkey&table=puppy</b> )</i>";
+	echo "<i>( Example: <b>http://40.117.58.200/it350site/read.php?user=my_user&secretkey=my_secretkey&table=puppy</b> )</i>";
 	$validparams = FALSE;
 	exit;
 }
@@ -69,7 +69,7 @@ if ((!$mysqli->query($checktable)) && $validparams == TRUE){
 if ((!isset($_GET['set']))) {
 	echo "Oops! Parameter error:<br />\n";
 	echo "All Puppies Unlimited&trade; <b>UPDATE</b> queries require a 'set', parameter.<br />\n";
-	echo "<i>( Example: <b>http://192.168.50.92/it350site/update.php?user=my_user&set=my_secretkey&table=puppy&set=puppy_age='5'&conditions=id='17'</b> )</i>";
+	echo "<i>( Example: <b>http://40.117.58.200/it350site/update.php?user=my_user&set=my_secretkey&table=puppy&set=puppy_age='5'&conditions=id='17'</b> )</i>";
 	$validparams = FALSE;
 	exit;
 }
@@ -82,8 +82,8 @@ if ($validparams == TRUE){
 	if (isset($_GET['set'])){
 		$clean_set = filter_var($_GET['set'], FILTER_SANITIZE_STRING);
 		$revised_set = str_replace("%20"," ",$clean_set);
-		$revised_set = preg_replace("!&#39;%?[a-zA-Z0-9]+%?&#39;!","?",$revised_set);
-		$set_array = preg_match_all("!&#39;(%?[a-zA-Z0-9]+%?)&#39;!", $clean_set, $set_matches, PREG_PATTERN_ORDER);
+		$revised_set = preg_replace("!&#39;%?[a-zA-Z0-9\-\@\. ]+%?&#39;!","?",$revised_set);
+		$set_array = preg_match_all("!&#39;(%?[a-zA-Z0-9\-\@\. ]+%?)&#39;!", $clean_set, $set_matches, PREG_PATTERN_ORDER);
 		
 		// Append `SET [set]`
 		$sql .= ' SET ' . $revised_set;
@@ -107,7 +107,7 @@ if ($validparams == TRUE){
 			$parameters = [];
 			$types = "";
 			foreach ($set_matches[1] as $c) {
-				if (preg_match("![0-9\.]+!",$c)) {
+				if (preg_match("!^[0-9\.]+$!",$c)) {
 					$types .= "d";
 				} else {
 					$types .= "s";
@@ -132,7 +132,7 @@ if ($validparams == TRUE){
    			// Oh no! The query failed. 
 			echo "Oops! Execution Error:<br />\n";
 			echo "The <b>UPDATE</b> did not execute successfully. Please check your syntax.<br />\n";
-			echo "<i>( Example: <b>http://192.168.50.92/it350site/update.php?user=my_user&set=my_secretkey&table=puppy&set=puppy_age='5'&conditions=id='17'</b> )</i>";
+			echo "<i>( Example: <b>http://40.117.58.200/it350site/update.php?user=my_user&set=my_secretkey&table=puppy&set=puppy_age='5'&conditions=id='17'</b> )</i>";
 			$validparams = FALSE;
 			exit;
 		}
@@ -168,7 +168,7 @@ if ($validparams == TRUE){
    			// Oh no! The query failed. 
 			echo "Oops! Execution Error:<br />\n";
 			echo "The <b>UPDATE</b> did not execute successfully. Please check your syntax.<br />\n";
-			echo "<i>( Example: <b>http://192.168.50.92/it350site/update.php?user=my_user&set=my_secretkey&table=puppy&set=puppy_age='5'&conditions=id='17'</b> )</i>";
+			echo "<i>( Example: <b>http://40.117.58.200/it350site/update.php?user=my_user&set=my_secretkey&table=puppy&set=puppy_age='5'&conditions=id='17'</b> )</i>";
 			$validparams = FALSE;
 			exit;
 		}

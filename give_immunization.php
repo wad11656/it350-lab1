@@ -1,58 +1,32 @@
 <?php
 error_reporting(0);
-<<<<<<< HEAD
-=======
-
->>>>>>> 1d35559ff6aeff9f2361c062466a801a38c3ccf2
 // Set $_GET variables
 if (isset($_GET['user'])){
 	$user = filter_var($_GET['user'], FILTER_SANITIZE_STRING);
 } else {
 	$user = 'N/A';
 }
-<<<<<<< HEAD
-=======
-
->>>>>>> 1d35559ff6aeff9f2361c062466a801a38c3ccf2
 if (isset($_GET['secretkey'])){
 	$secretkey = filter_var($_GET['secretkey'], FILTER_SANITIZE_STRING);
 } else {
 	$secretkey = 'N/A';
 }
-<<<<<<< HEAD
-=======
-
->>>>>>> 1d35559ff6aeff9f2361c062466a801a38c3ccf2
 if (isset($_GET['puppy'])){
 	$puppy = filter_var($_GET['puppy'], FILTER_SANITIZE_STRING);
 } else {
 	$puppy = 'N/A';
 }
-<<<<<<< HEAD
-=======
-
->>>>>>> 1d35559ff6aeff9f2361c062466a801a38c3ccf2
 if (isset($_GET['immunization'])){
 	$immunization = filter_var($_GET['immunization'], FILTER_SANITIZE_STRING);
 } else {
 	$immunization = 'N/A';
 }
-<<<<<<< HEAD
-=======
-
->>>>>>> 1d35559ff6aeff9f2361c062466a801a38c3ccf2
 if (isset($_GET['veterinarian'])){
 	$veterinarian = filter_var($_GET['veterinarian'], FILTER_SANITIZE_STRING);
 } else {
 	$veterinarian = 'N/A';
 }
-<<<<<<< HEAD
 $validparams = TRUE;
-=======
-
-$validparams = TRUE;
-
->>>>>>> 1d35559ff6aeff9f2361c062466a801a38c3ccf2
 if ((!isset($_GET['user'])) || (!isset($_GET['secretkey'])) || (!isset($_GET['puppy'])) || (!isset($_GET['immunization'])) || (!isset($_GET['veterinarian']))){
 	echo "Oops! Parameter error:<br />\n";
 	echo "<b>give_immunization.php</b> requires a 'user', 'secretkey', 'puppy', 'immunization', and 'veterinarian' parameter. Check you have all of these in your URL.<br />\n";
@@ -60,32 +34,16 @@ if ((!isset($_GET['user'])) || (!isset($_GET['secretkey'])) || (!isset($_GET['pu
 	$validparams = FALSE;
 	exit;
 }
-<<<<<<< HEAD
 // Connecting to and selecting a MySQL database named sakila
 // Hostname: 127.0.0.1, username: your_user, password: your_pass, db: sakila
 $mysqli = new mysqli('127.0.0.1', $user, $secretkey, 'puppies_unlimited');
-=======
-
-// Connecting to and selecting a MySQL database named sakila
-// Hostname: 127.0.0.1, username: your_user, password: your_pass, db: sakila
-$mysqli = new mysqli('127.0.0.1', $user, $secretkey, 'puppies_unlimited');
-
-
->>>>>>> 1d35559ff6aeff9f2361c062466a801a38c3ccf2
 // Oh no! A connect_errno exists so the connection attempt failed!
 if ($mysqli->connect_errno) {
     // The connection failed. What do you want to do? 
     // You could contact yourself (email?), log the error, show a nice page, etc.
     // You do not want to reveal sensitive information
-<<<<<<< HEAD
     // Let's try this:
 	echo "Oops! Database connection error";
-=======
-
-    // Let's try this:
-	echo "Oops! Database connection error";
-
->>>>>>> 1d35559ff6aeff9f2361c062466a801a38c3ccf2
     // Something you should not do on a public site, but this example will show you
     // anyways, is print out MySQL error related information -- you might log this
 	echo "Errno: " . $mysqli->connect_errno . "<br />\n";
@@ -103,10 +61,6 @@ if ($mysqli->connect_errno) {
     // You might want to show them something nice, but we will simply exit
 	exit;
 }
-<<<<<<< HEAD
-=======
-
->>>>>>> 1d35559ff6aeff9f2361c062466a801a38c3ccf2
 // Check if one of the parameters has more than 1 value
 if ($validparams == TRUE){
 	$params_arr = ['puppy','immunization','veterinarian'];
@@ -120,10 +74,7 @@ if ($validparams == TRUE){
 			$validparams = FALSE;
 		}
 		// If all parameters only have 1 value each, check if each value exists in its respective table.
-<<<<<<< HEAD
 		/*
-=======
->>>>>>> 1d35559ff6aeff9f2361c062466a801a38c3ccf2
 		else{
 			$error_columns = "";
 			for ($i = 0; $i < count($param_arr); $i++){
@@ -153,22 +104,12 @@ if ($validparams == TRUE){
 				$validparams = FALSE;
 			}
 		}
-<<<<<<< HEAD
 		*/
 	}
 }
 // Perform an SQL query
 if ($validparams == TRUE){
 	$sql = "INSERT INTO puppy_immunization (puppy_id, immunization_id, vet_id) VALUES ((SELECT id FROM puppy WHERE puppy_name = '$puppy'),(SELECT id FROM immunization WHERE immunization_name = '$immunization'),(SELECT id FROM veterinarian WHERE person_id = (SELECT id FROM person WHERE person_name = '$veterinarian')))";
-=======
-	}
-}
-
-
-// Perform an SQL query
-if ($validparams == TRUE){
-	$sql = "INSERT INTO puppy_immunization (puppy_id, immunization_id, vet_id) VALUES ((SELECT id FROM puppy WHERE puppy_name = '$puppy'),(SELECT id FROM immunization WHERE immunization_name = '$immunization'),(SELECT id FROM veterinarian WHERE veterinarian_name = '$veterinarian'))";
->>>>>>> 1d35559ff6aeff9f2361c062466a801a38c3ccf2
 	// Set rows_affected
 	$rows_affected = 0;
 	// Execute 1st SQL Statment ($sql)
@@ -194,10 +135,6 @@ if ($validparams == TRUE){
 		echo "<b>" . $rows_affected . "</b> row(s) affected.";
 	}
 }
-<<<<<<< HEAD
-=======
-
->>>>>>> 1d35559ff6aeff9f2361c062466a801a38c3ccf2
 // The script will automatically free the result and close the MySQL
 // connection when it exits, but let's just do it anyways
 $mysqli->close();

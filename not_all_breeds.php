@@ -14,18 +14,12 @@ if (isset($_GET['secretkey'])){
 	$secretkey = 'N/A';
 }
 
-if (isset($_GET['query'])){
-	$query = filter_var($_GET['query'], FILTER_SANITIZE_STRING);
-} else {
-	$query = 'N/A';
-}
-
 $validparams = TRUE;
 
 if ((!isset($_GET['user'])) || (!isset($_GET['secretkey']))){
 	echo "Oops! Parameter error:<br />\n";
 	echo "This Puppies Unlimited&trade; URL query require a 'user' and 'secretkey' parameter. Check you have these two in your URL.<br />\n";
-	echo "( Example: <b>http://40.117.58.200/it350site/popularcustomers.php?user=my_user&secretkey=my_secretkey</b> )";
+	echo "( Example: <b>http://40.117.58.200/it350site/noimmus.php?user=my_user&secretkey=my_secretkey</b> )";
 	$validparams = FALSE;
 	exit;
 }
@@ -62,40 +56,12 @@ if ($mysqli->connect_errno) {
 	exit;
 }
 
-if ($validparams == TRUE){
-	$sql = "OPTIMIZE TABLE puppy";
-	// Set rows_affected
-	$rows_affected = 0;
-	// Execute 1st SQL Statment ($sql)
-	if ($stmt = $mysqli->prepare($sql)){
-		$stmt->execute();
-		$rows_affected = $stmt->affected_rows;
-	}
-	else{
-   			// Oh no! The query failed. 
-	echo "Oops! Execution Error:<br />\n";
-		echo "The <b>OPTIMIZE TABLE</b> statement did not execute successfully. Please check your syntax.<br />\n";
-			echo "Errno: " . $mysqli->errno . "<br />\n";
-	echo "Error: " . $mysqli->error . "<br />\n";
-		echo "<i>( Example: <b>http://40.117.58.200/it350site/search.php?user=my_user&secretkey=my_secretkey</b> )</i>";
-		$validparams = FALSE;
-		exit;
-	}
-	// Print result of SQL query as JSON
-	if ($validparams == TRUE){
-		// Print result of SQL query as JSON
-		$result = $stmt->get_result();
-		$result_array = mysqli_fetch_all($result, MYSQLI_ASSOC);
-		//echo json_encode($result_array);
-	}
-}
-
 // Perform an SQL query
 if ($validparams == TRUE){
-	$sql = "SELECT id, MATCH(description) AGAINST ('$query' IN BOOLEAN MODE) AS score FROM puppy ORDER BY score DESC";
+	$sql = "SELECT location_name from location left join puppy on puppy.location=location.id join puppy_breed on puppy_breed.puppy_id=puppy.id GROUP BY location HAVING (count(*)<(SELECT DISTINCT COUNT(*) FROM breed))";
 	// Set rows_affected
 	$rows_affected = 0;
-	// Execute 1st SQL Statment ($sql)
+	// Print result of SQL query as JSON
 	if ($stmt = $mysqli->prepare($sql)){
 		$stmt->execute();
 		$rows_affected = $stmt->affected_rows;
@@ -104,13 +70,11 @@ if ($validparams == TRUE){
    			// Oh no! The query failed. 
 	echo "Oops! Execution Error:<br />\n";
 		echo "The <b>SELECT</b> statement did not execute successfully. Please check your syntax.<br />\n";
-			echo "Errno: " . $mysqli->errno . "<br />\n";
-	echo "Error: " . $mysqli->error . "<br />\n";
-		echo "<i>( Example: <b>http://40.117.58.200/it350site/search.php?user=my_user&secretkey=my_secretkey</b> )</i>";
+		echo "<i>( Example: <b>http://40.117.58.200/it350site/noimmus.php?user=my_user&secretkey=my_secretkey</b> )</i>";
 		$validparams = FALSE;
 		exit;
 	}
-	// Print result of SQL query as JSON
+
 	if ($validparams == TRUE){
 		// Print result of SQL query as JSON
 		$result = $stmt->get_result();

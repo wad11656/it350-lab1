@@ -1,9 +1,4 @@
 <?php
-<<<<<<< HEAD
-=======
-error_reporting(E_ALL);
-ini_set('display_errors', '1');
->>>>>>> 1d35559ff6aeff9f2361c062466a801a38c3ccf2
 
 // Set $_GET variables
 if (isset($_GET['user'])){
@@ -121,10 +116,7 @@ if ($validparams == TRUE){
 
 	// Run the query
 	$query_sql = "INSERT INTO $table ($columns) VALUES ($revised_values)";
-<<<<<<< HEAD
 	print $query_sql;
-=======
->>>>>>> 1d35559ff6aeff9f2361c062466a801a38c3ccf2
 
 	if ($stmt = $mysqli->prepare($query_sql)) {
 		$types = "";
@@ -137,10 +129,7 @@ if ($validparams == TRUE){
 		}
 		$stmt->bind_param($types, ...$value_matches[1]);
 		$stmt->execute();
-<<<<<<< HEAD
 		print $stmt->error;
-=======
->>>>>>> 1d35559ff6aeff9f2361c062466a801a38c3ccf2
 		$rows_affected = $stmt->affected_rows;
 		if ($rows_affected < 0){
 			echo "Oops! Parameter Error:<br />\n";

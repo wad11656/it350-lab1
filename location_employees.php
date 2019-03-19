@@ -64,7 +64,12 @@ if ($mysqli->connect_errno) {
 
 // Perform an SQL query
 if ($validparams == TRUE){
-	$sql = "SELECT p.puppy_name FROM puppy p INNER JOIN (SELECT location, MIN(date_time_posted) AS oldest_date_time FROM puppy p GROUP BY location) loc ON loc.location = p.location AND loc.oldest_date_time = p.date_time_posted";
+
+
+
+	$sql = "SELECT pers.person_name, location.location_name, 'manages' as role FROM employee_manages emp_mg inner join person pers ON pers.id = emp_mg.employee_id inner join location on emp_mg.location_id=location.id UNION SELECT pers.person_name, location.location_name, 'works at' as role FROM employee_works_at emp_wrk inner join person pers ON pers.id = emp_wrk.employee_id inner join location on emp_wrk.location_id=location.id";
+
+
 	// Set rows_affected
 	$rows_affected = 0;
 	// Execute 1st SQL Statment ($sql)

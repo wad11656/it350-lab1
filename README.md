@@ -100,6 +100,12 @@ API: http://192.168.50.92/it350site/
 
 ## Functionality:
 
+=========================================
+
+**Project 1**:
+
+=========================================
+
 ### INSERT.PHP Example Query:
 
 `http://192.168.50.92/it350site/insert.php?user=employee&secretkey=123654&table=location&columns=location_name&values='Downtown SLC'`
@@ -116,7 +122,11 @@ API: http://192.168.50.92/it350site/
 
 `http://192.168.50.92/it350site/update.php?user=employee&secretkey=123654&table=customer&set=customer_name=%27Phil%27&conditions=person_id=%27937%27`
 
+=========================================
+
 **Extension 1**:
+
+=========================================
 
 ### PEDIGREE.PHP Example Query:
 
@@ -154,7 +164,11 @@ API: http://192.168.50.92/it350site/
 
 `http://192.168.50.92/it350site/delete_immunizations.php?user=employeeadmin&secretkey=321456&immunization=Rabies`
 
+=========================================
+
 **Extension 2**:
+
+=========================================
 
 ### SEARCH.PHP Example Query:
 

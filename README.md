@@ -100,31 +100,31 @@ API: http://192.168.50.92/it350site/
 
 ## Functionality:
 
-<del>### SEARCH.PHP Example Query:</del>
+### SEARCH.PHP Example Query:
 
-<del>`http://192.168.50.92/it350site/search.php?user=employee&secretkey=123654&query=dog`</del>
+`http://192.168.50.92/it350site/search.php?user=employee&secretkey=123654&query=dog`
 
-<del>### LONGEST_WAITING.PHP Example Query:</del>
+### LONGEST_WAITING.PHP Example Query:
 
-<del>`http://192.168.50.92/it350site/longest_waiting.php?user=employee&secretkey=123654`</del>
+`http://192.168.50.92/it350site/longest_waiting.php?user=employee&secretkey=123654`
 
-<del>### LOCATION_EMPLOYEES.PHP Example Query:</del>
+### LOCATION_EMPLOYEES.PHP Example Query:
 
-<del>`http://192.168.50.92/it350site/location_employees.php?user=employee&secretkey=123654`</del>
+`http://192.168.50.92/it350site/location_employees.php?user=employee&secretkey=123654`
 
-<del>### EMPLOYEE_CUSTOMERS.PHP Example Query:</del>
+### EMPLOYEE_CUSTOMERS.PHP Example Query:
 
-<del>`http://192.168.50.92/it350site/employee_customers.php?user=employee&secretkey=123654`</del>
+`http://192.168.50.92/it350site/employee_customers.php?user=employee&secretkey=123654`
 
-<del>### NOT_ALL_BREEDS.PHP Example Query:</del>
+### NOT_ALL_BREEDS.PHP Example Query:
 
-<del>`http://192.168.50.92/it350site/not_all_breeds.php?user=employee&secretkey=123654`</del>
+`http://192.168.50.92/it350site/not_all_breeds.php?user=employee&secretkey=123654`
 
-<del>### WORKS_ALL.PHP Example Query:</del>
+### WORKS_ALL.PHP Example Query:
 
-<del>`http://192.168.50.92/it350site/works_all.php?user=employee&secretkey=123654&manager=Jane`</del>
+`http://192.168.50.92/it350site/works_all.php?user=employee&secretkey=123654&manager=Jane`
 
-<del>## (Intentional) Quirks:</del>
+## (Intentional) Quirks:
 
 **UPDATE (2/15/19):** Functionality adheres to that found in the test driver.
 

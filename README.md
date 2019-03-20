@@ -1,10 +1,10 @@
-# Lab: Extension 1
+# Lab: Extension 2
 
-IT350 Lab: Extension 1 by Wade Murdock.
+IT350 Lab: Extension 2 by Wade Murdock.
 
 GitHub: https://github.com/wad11656/it350-lab1
 
-API: http://40.117.58.200/it350site/
+API: http://192.168.50.92/it350site/
 
 ## Database Structure:
 
@@ -28,27 +28,57 @@ API: http://40.117.58.200/it350site/
 
    Table: **customer**
 
-     --------------------------------------------
-    |id(pk)|customer_name|age|address|phone|email|
-     --------------------------------------------
+     --------------------
+    |id(pk)|person_id(fk)|
+     ---------------------
+   
+   Table: **employee**
 
+      -----------------------------------------------
+     |id(pk)|person_id(fk)|hire_date|termination_date|
+      -----------------------------------------------   
+   
+   Table: **employee_manages**
+
+      --------------------------------------
+     |id(pk)|employee_id(fk)|location_id(fk)|
+      --------------------------------------   
+   
+   Table: **employee_works_at**
+
+      --------------------------------------
+     |id(pk)|employee_id(fk)|location_id(fk)|
+      --------------------------------------    
+   
    Table: **immunization**
 
       -------------------------------------------------
      |id(pk)|immunization_name|immunization_description|
       -------------------------------------------------
+   
+   Table: **location**
 
+      --------------------
+     |id(pk)|location_name|
+      --------------------
+   
    Table: **parent**
 
       ---------------------------------------------------------------------------
      |relationship_id(pk)|puppy_parent_id(fk)|puppy_child_id(fk)|mother_or_father|
       ---------------------------------------------------------------------------
 
+   Table: **person**
+
+     ------------------------------------------
+    |id(pk)|person_name|age|address|phone|email|
+     ------------------------------------------
+   
    Table: **puppy**
 
-     ------------------------------------------------------
-    |id(pk)|puppy_name|age|location|photos|date_time_posted|
-     ------------------------------------------------------
+     ----------------------------------------------------------------------
+    |id(pk)|puppy_name|age|location(fk)|photos|date_time_posted|description|
+     ----------------------------------------------------------------------
 
    Table: **puppy_breed**
 
@@ -64,27 +94,35 @@ API: http://40.117.58.200/it350site/
 
    Table: **veterinarian**
 
-      -------------------------------------
-     |id(pk)|veterinarian_name|address|city|
-      -------------------------------------
+      -------------------------
+     |id(pk)|person_id(fk)|city|
+      -------------------------
 
 ## Functionality:
 
-<del>### READ.PHP Example Query:</del>
+<del>### SEARCH.PHP Example Query:</del>
 
-<del>`http://40.117.58.200/it350site/read.php?user=employee&secretkey=123654&table=puppy&order=puppy_age&limit=5&conditions=puppy_name%20LIKE%20%27Alfred%27`</del>
+<del>`http://192.168.50.92/it350site/search.php?user=employee&secretkey=123654&query=dog`</del>
 
-<del>### INSERT.PHP Example Query:</del>
+<del>### LONGEST_WAITING.PHP Example Query:</del>
 
-<del>`http://40.117.58.200/it350site/insert.php?user=employee&secretkey=123654&table=customer&columns=customer_name,age,address,phone,email&values=%27George%27,%2735%27,%271234%27,%271234567%27,%27George@gmail.com%27`</del>
+<del>`http://192.168.50.92/it350site/longest_waiting.php?user=employee&secretkey=123654`</del>
 
-<del>### UPDATE.PHP Example Query:</del>
+<del>### LOCATION_EMPLOYEES.PHP Example Query:</del>
 
-<del>`http://40.117.58.200/it350site/update.php?user=employee&secretkey=123654&table=customer&set=customer_name=%27Phil%27&conditions=id=%273%27`</del>
+<del>`http://192.168.50.92/it350site/location_employees.php?user=employee&secretkey=123654`</del>
 
-<del>### DELETE.PHP Example Query:</del>
+<del>### EMPLOYEE_CUSTOMERS.PHP Example Query:</del>
 
-<del>`http://40.117.58.200/it350site/delete.php?user=employeeadmin&secretkey=321456&table=customer&conditions=id=%272%27`</del>
+<del>`http://192.168.50.92/it350site/employee_customers.php?user=employee&secretkey=123654`</del>
+
+<del>### NOT_ALL_BREEDS.PHP Example Query:</del>
+
+<del>`http://192.168.50.92/it350site/not_all_breeds.php?user=employee&secretkey=123654`</del>
+
+<del>### WORKS_ALL.PHP Example Query:</del>
+
+<del>`http://192.168.50.92/it350site/works_all.php?user=employee&secretkey=123654&manager=Jane`</del>
 
 <del>## (Intentional) Quirks:</del>
 

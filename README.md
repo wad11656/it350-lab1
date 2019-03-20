@@ -100,6 +100,62 @@ API: http://192.168.50.92/it350site/
 
 ## Functionality:
 
+### INSERT.PHP Example Query:
+
+`http://192.168.50.92/it350site/insert.php?user=employee&secretkey=123654&table=location&columns=location_name&values='Downtown SLC'`
+
+### DELETE.PHP Example Query:
+
+`http://192.168.50.92/it350site/delete.php?user=employeeadmin&secretkey=321456&table=adoption&conditions=puppy_id>='0'`
+
+### READ.PHP Example Query:
+
+`http://192.168.50.92/it350site/read.php?user=employee&secretkey=123654&table=puppy&order=puppy_age&limit=5&conditions=puppy_name%20LIKE%20%Mutt%27`
+
+### UPDATE.PHP Example Query:
+
+`http://192.168.50.92/it350site/update.php?user=employee&secretkey=123654&table=customer&set=customer_name=%27Phil%27&conditions=person_id=%27937%27`
+
+**Extension 1**:
+
+### PEDIGREE.PHP Example Query:
+
+`http://192.168.50.92/it350site/pedigree.php?user=employee&secretkey=123654&puppy=Jack`
+
+### INSERT_JOIN.PHP Example Query:
+
+`http://192.168.50.92/it350site/insert_join.php?user=employee&secretkey=123654&table=customer&columns=person_id&values='Joe'&fktables=person&fkcolumns=person_name`
+
+### VETCITIES.PHP Example Query:
+
+`http://192.168.50.92/it350site/vetcities.php?user=employee&secretkey=123654`
+
+### UNADOPTEDBREEDCOUNTS.PHP Example Query:
+
+`http://192.168.50.92/it350site/unadoptedbreedcounts.php?user=employee&secretkey=123654`
+
+### CUSTOMERPUPS.PHP Example Query:
+
+`http://192.168.50.92/it350site/customerpups.php?user=employee&secretkey=123654`
+
+### NOIMMUS.PHP Example Query:
+
+`http://192.168.50.92/it350site/noimmus.php?user=employee&secretkey=123654`
+
+### POPULARCUSTOMERS.PHP Example Query:
+
+`http://192.168.50.92/it350site/popularcustomers.php?user=employee&secretkey=123654`
+
+### GIVE_IMMUNIZATION.PHP Example Query:
+
+`http://192.168.50.92/it350site/give_immunization.php?user=employee&secretkey=123654&puppy=Jill&immunization=Rabies&veterinarian=Jane`
+
+### DELETE_IMMUNIZATION.PHP Example Query:
+
+`http://192.168.50.92/it350site/delete_immunizations.php?user=employeeadmin&secretkey=321456&immunization=Rabies`
+
+**Extension 2**:
+
 ### SEARCH.PHP Example Query:
 
 `http://192.168.50.92/it350site/search.php?user=employee&secretkey=123654&query=dog`
@@ -125,18 +181,6 @@ API: http://192.168.50.92/it350site/
 `http://192.168.50.92/it350site/works_all.php?user=employee&secretkey=123654&manager=Jane`
 
 ## (Intentional) Quirks:
-
-**UPDATE (2/15/19):** Functionality adheres to that found in the test driver.
-
-## (Intentional) Quirks:
-
-### ALL:
-
-<del>* Valid emails (i.e. `bob@gmail.com`), file names with extensions (i.e. `photo.jpg`), and phone numbers with hyphens (i.e. `555-4321`) are not accepted as URL parameters due to `jgiboney`'s binding parameter code's limitations. The biggest resulting limitation from this is that you therefore cannot `INSERT`/`UPDATE` a valid email into the `customer_email` column.</del>
-
-   <del>`jgiboney` admits this is an error on his part, did not expect us to fully understand--nor, therefore, be able to modify--the binding parameter code he provided, and rather expected us to just copy and paste it where appropriate, so points are not to be taken off for our API not being able to accept valid emails (i.e. `bob@gmail.com`) or phone numbers with hyphens (i.e. `555-4321`).</del>
-
-**UPDATE (2/15/19):** Emails and phone numbers with hyphens are now accepted and are checked for proper formatting.
 
 ### READ.PHP:
 
